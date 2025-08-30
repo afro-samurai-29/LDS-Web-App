@@ -3,7 +3,7 @@
 ini_set('display_errors', true);
 
 $username = "%placeholder%";
-$database = "%placeholder%";
+$database = "%dbplaceholder%";
 
 class MySQLClass {
 	public $mysqli;
