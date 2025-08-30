@@ -15,7 +15,9 @@ class MySQLClass {
 		global $username, $database;
 		$this->mysqli = new mysqli("localhost", $username, $username, $database);
 		if ($this->mysqli->connect_error) {
-			die("Connection failed: " . $this->mysqli->connect_error);
+			header("HTTP/1.1 521 Failed db connection", true);
+			header('Status: 521 Failed db connection', true);
+			die();
 		}
 		$count = count($this->tables);
 		for ($i = 0; $i < $count; $i++) {
@@ -26,7 +28,9 @@ class MySQLClass {
 	function checkExistence($tableName) {
 		$results = $this->mysqli->query("SHOW TABLES LIKE '$tableName'");
 		if ($results->num_rows == 0) {
-			die("Connection failed: Table \"" . $tableName . "\" does not exist.");
+			header("HTTP/1.1 521 Failed to find db table.", true);
+			header('Status: 521 Failed to find db table', true);
+			die();
 		}
 	}
 

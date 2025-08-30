@@ -1,0 +1,16 @@
+div#donationsList {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+div#donationsList > div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+img.donationImg {
+	width: 20rem;
+	height: auto;
+}
