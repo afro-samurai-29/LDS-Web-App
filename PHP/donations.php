@@ -22,6 +22,7 @@ class DonationsClass {
 }
 
 $donationsClass = new DonationsClass();
-var_dump($donationsClass->getDonations());
+$jsonEncodedDonations = json_encode($donationsClass->getDonations());
+exit($jsonEncodedDonations);
 
 ?>
