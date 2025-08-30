@@ -2,8 +2,8 @@
 
 ini_set('display_errors', true);
 
-$username = "s2681824";
-$database = "d2681824";
+$username = "%placeholder%";
+$database = "%placeholder";
 
 class MySQLClass {
 	public $mysqli;
