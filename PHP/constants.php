@@ -24,7 +24,6 @@ class MySQLClass {
 	}
 
 	function checkExistence($tableName) {
-		echo "{$tableName}" . "\n";
 		$results = $this->mysqli->query("SHOW TABLES LIKE '$tableName'");
 		if ($results->num_rows == 0) {
 			die("Connection failed: Table \"" . $tableName . "\" does not exist.");
@@ -33,6 +32,6 @@ class MySQLClass {
 
 }
 
-$MySQL = new MySQLClass();
+$mysqli = (new MySQLClass())->mysqli;
 
 ?>
