@@ -6,8 +6,62 @@
 	<link href="./donate.css" rel="stylesheet"/>
 <head>
 <body>
-	<h1>Donate</h1>
-	<button id="switch"><a href="./donations.html">Switch</a></button>
+	<center><h1>Donate</h1></center>
+	<div id="info" style="margin-bottom:2rem;">
+		<div>
+			<label for="donationImg">Please choose a good picture of the item(s) you wish to donate:</label>
+			<br>
+			<input type="file" accept="image/png, image/jpg, image/jpeg" id="donationImg" name="donationImg"/>
+		</div>
+		<div>
+			<label for="contactNo">Contact Number:</label>
+			<br>
+			<input type="tel" name="contactNo" id="contactNo" pattern="[0-9]{3}[ \-]{0,1}[0-9]{3}[ \-]{0,1}[0-9]{4}" required>
+		</div>
+		<div>
+			<label for="description">Description:</label>
+			<br>
+			<textarea name="description" id="description" rows="10" cols="50" minlength="25" spellcheck="true" required></textarea>
+		</div>
+		<div>
+			<fieldset>
+				<legend>Please select the type of donation you would like to make</legend>
+				<div class="donationType">
+					<input type="radio" class="donationType item" name="type" value="food" checked/>
+					<label for="food">Food</label>
+				</div>
+				<div class="donationType">
+					<input type="radio" class="donationType item" name="type" value="clothes"/>
+					<label for="clothes">Clothes</label>
+				</div>
+				<div class="donationType">
+					<input type="radio" class="donationType item" name="type" value="utility"/>
+					<label for="clothes">Utility Tool</label>
+				</div>
+			</fieldset>
+		</div>
+		<div>
+			<fieldset>
+				<legend>Please select the location you would like to hand over the donation at</legend>
+				<div class="donationLocation">
+					<input type="radio" class="donationLocation item" name="location" value="wss" checked/>
+					<label for="wss">WSS</label>
+				</div>
+				<div class="donationLocation">
+					<input type="radio" class="donationLocation item" name="location" value="flowerHall"/>
+					<label for="flowerHall">Flower Hall</label>
+				</div>
+				<div class="donationLocation">
+					<input type="radio" class="donationLocation item" name="location" value="greatHall"/>
+					<label for="greatHall">Great Hall</label>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<div class="buttons">
+		<button id="donate">Donate</button>
+		<button id="switch"><a href="./donations.html">Switch</a></button>
+	</div>
 	<script src="../donate.js" type="module"></script>
 </body>
 </html>
