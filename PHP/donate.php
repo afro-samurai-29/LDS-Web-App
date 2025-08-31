@@ -73,8 +73,6 @@ class DonateClass {
 
 	public function addDonation($data) {
 		$data["description"] = str_replace("  ", " ", trim($data["description"]));
-		$this->entropyCheck($data["description"]);
-		return;
 		$this->validateData($data);
 		$img = $data["images"];
 		if (count($img) == 0) {
