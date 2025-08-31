@@ -1,10 +1,13 @@
 import { PHPSERVER } from "./constants.js"
 
-function fetchDonations() {
+function fetchDonations(filters = ["food"]) {
 	return fetch(`${PHPSERVER}/donations.php`, {
 		method: "POST",
-		body: {
-			test: "Just a test"
+		body: JSON.stringify({
+			"filters": filters
+		}),
+		headers: {
+			"Content-Type": "application/json; charset=UTF-8"
 		}
 	}).then(async (response) => {
 		response = await response.text();
@@ -16,14 +19,15 @@ function createImgElement(imgSource) {
 	const img = document.createElement("img");
 	img.setAttribute("class", "donationImg");
 	if (imgSource == null) {
-		img.setAttribute("src", "../../icons/no-image-icon100.png")
+		img.setAttribute("src", "../../icons/no-image-icon100.png");
+	} else {
+		img.setAttribute("src", imgSource);
 	}
 	return img;
 }
 
 function createDonationDiv(donation) {
-	console.debug(donation);
-	const imgSource = donation[0], contactNo = donation[1], description = donation[2];
+	const imgSource = donation[0], contactNo = donation[1], description = donation[2], type = donation[3], slocation = donation[4];
 	const div = document.createElement("div");
 	div.setAttribute("class", "donation");
 	div.appendChild(createImgElement(imgSource));
@@ -33,6 +37,12 @@ function createDonationDiv(donation) {
 	const descriptionSpan = document.createElement("span");
 	descriptionSpan.textContent = "Description: " + description;
 	div.appendChild(descriptionSpan);
+	const typeSpan = document.createElement("span");
+	typeSpan.textContent = "Type: " + type;
+	div.appendChild(typeSpan);
+	const locationSpan = document.createElement("span");
+	locationSpan.textContent = "Location: " + slocation;
+	div.appendChild(locationSpan);
 	return div;
 }
 
