@@ -48,7 +48,8 @@ function createDonationDiv(donation) {
 
 async function populateDonations() {
 	const listInterface = document.body.querySelector("#donationsList");
-	const donations = await fetchDonations();
+	listInterface.replaceChildren();
+	const donations = await fetchDonations([]);
 	for (const key of Object.keys(donations)) {
 		const donationDiv = createDonationDiv(donations[key]);
 		listInterface.appendChild(donationDiv);

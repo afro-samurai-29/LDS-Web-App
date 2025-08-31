@@ -28,13 +28,18 @@ class DonationsClass {
 
 	public function getDonations($filters) {
 		$count = count($filters);
-		$data = $this->findInSetString($count);
 		
-		$stmt = $this->mysqli->prepare("SELECT * FROM donations {$data}");
-		MySQLClass::dynamicBindParams($stmt, $filters);
+		$result;
+		if ($count == 0) {
+			$result = $this->mysqli->query("SELECT * FROM donations");
+		} else {
+			$data = $this->findInSetString($count);
+			$stmt = $this->mysqli->prepare("SELECT * FROM donations {$data}");
+			MySQLClass::dynamicBindParams($stmt, $filters);
+			$stmt->execute();
+			$result = $stmt->get_result();
+		}
 
-		$stmt->execute();
-		$result = $stmt->get_result();
 		if ($result == false) {
 			header("HTTP/1.1 521 Query failed", true);
 			header("Status: 521 Query failed", true);
