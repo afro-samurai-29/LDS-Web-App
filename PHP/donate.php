@@ -77,9 +77,8 @@ class DonateClass {
 		$img = $data["images"];
 		if (count($img) == 0) {
 			$img = null;
-		} else {
-			$img = $data["images"]["0"];
 		}
+		$img = json_encode($img);
 		$params = [
 			"0" => $img,
 			"1" => $data["contactNo"],

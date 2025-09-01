@@ -27,10 +27,16 @@ function createImgElement(imgSource) {
 }
 
 function createDonationDiv(donation) {
-	const imgSource = donation[0], contactNo = donation[1], description = donation[2], type = donation[3], slocation = donation[4];
+	const imgSources = JSON.parse(donation[0]), contactNo = donation[1], description = donation[2], type = donation[3], slocation = donation[4];
 	const div = document.createElement("div");
 	div.setAttribute("class", "donation");
-	div.appendChild(createImgElement(imgSource));
+	if (imgSources == null) {
+			div.appendChild(createImgElement(imgSources));
+	} else {
+		for (const imgSource of imgSources) {
+			div.appendChild(createImgElement(imgSource));
+		}
+	}
 	const contactNoSpan = document.createElement("span");
 	contactNoSpan.textContent = "Contact Number: " + contactNo;
 	div.appendChild(contactNoSpan);
