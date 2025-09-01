@@ -1,75 +1,212 @@
-html {
-	font-size: 100%;
+/* Home Page Specific Styles */
+.hero {
+    text-align: center;
+    padding: 6rem 2rem;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-button {
-	cursor: pointer;
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
 }
 
-button > a {
-	color: inherit;
-	text-decoration: none;
+.hero p {
+    font-size: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto 2rem;
 }
 
-/* Reset and base styles */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  position: relative;
-  height: 100vh;
-  overflow-x: hidden;
+.cta-button {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Full-page background using a pseudo-element */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-image: url("first.jpg");
-  background-position: center center;
+.cta-button:hover {
+    background-color: #ff5252;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #333;
+}
+
+.features {
+    background-color: white;
+    padding: 4rem 2rem;
+}
+
+.features-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    flex: 1;
+    min-width: 250px;
+    max-width: 350px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: #4ecdc4;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.stats {
+    background-color: #4ecdc4;
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.stat-item {
+    flex: 1;
+    min-width: 200px;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.testimonials {
+    padding: 4rem 2rem;
+    background-color: #f8f9fa;
+}
+
+.testimonial-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.testimonial-card {
+    flex: 1;
+    min-width: 300px;
+    max-width: 350px;
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-text {
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    color: #555;
+}
+
+.testimonial-author {
+    font-weight: bold;
+    color: #333;
+}
+
+.final-cta {
+    padding: 5rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+    color: white;
+}
+
+.final-cta h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.social-links {
+    margin-bottom: 1rem;
+}
+
+.social-links a {
+    color: white;
+    font-size: 1.5rem;
+    margin: 0 0.5rem;
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: #4ecdc4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.2rem;
+    }
+    
+    .navbar {
+        padding: 1em;
+    }
+    
+    .nav-links {
+        gap: 1em;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .feature-card, .testimonial-card {
+        min-width: 100%;
+    }
+}
+body{
+  background-image: url(first.jpg);
+  background-position: center;
   background-repeat: no-repeat;
-  background-color: rgb(173, 216, 230);
-  z-index: -1; /* Put it behind everything */
-  opacity: 1;  /* You can adjust this if you want a faded look */
-}
-
-/* Navbar styles */
-.navbar {
-  background-color: #ffffff;
-  padding: 1em 2em;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.logo {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #333;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 2em;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover {
-  color: #0077cc;
 }
