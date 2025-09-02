@@ -80,4 +80,5 @@ function addButtonListeners() {
 
 window.addEventListener("load", () => {
 	addButtonListeners();
+	populateDonations();
 });
