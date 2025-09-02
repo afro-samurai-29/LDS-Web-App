@@ -278,3 +278,8 @@ body::before {
 input[type="file"] {
     display: none;
 }
+#info p {
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 0.5rem;
+}
