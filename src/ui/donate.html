@@ -81,5 +81,18 @@
 			<button id="switch"><a href="./donations.html">Switch</a></button>
 		</div>
 		<script src="../donate.js" type="module"></script>
+		<script>
+			
+			const input = document.getElementById('donationImg');
+		const fileNameDisplay = document.getElementById('fileName');
+
+		input.addEventListener('change', () => {
+   		 if(input.files.length > 0){
+        	fileNameDisplay.textContent = input.files[0].name; // Show file name
+   		 } else {
+        fileNameDisplay.textContent = "No file chosen";
+    }
+});
+		</script>
 	</body>
 </html>
