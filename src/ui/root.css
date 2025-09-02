@@ -1,13 +1,10 @@
-html {
-	font-size: 100%;
-}
 /* Home Page Specific Styles */
 
 /* SlideShowStyles */
 .slideshow-container {
 	display: block;       /* required to make margin work */
 	margin: 0 auto; 
-	max-width: 800px;
+	max-width: 60%;
 	overflow: hidden;
 	border-radius: 1rem;
 	box-shadow: 0 0.4rem 1rem rgba(0,0,0,0.2);
@@ -38,7 +35,7 @@ html {
 /* NavBarStyles */
 .navbar {
 	background-color: #ffffff;
-	padding: 1em 2em;
+	padding: 1rem 2rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -46,24 +43,21 @@ html {
 	position: sticky;
 	top: 0;
 	z-index: 10;
+	width: 100%;
 }
 
 .logo {
-	font-size: 1.5em;
+	font-size: 1.5rem;
 	font-weight: bold;
-	color: #333;
-}
-
-.navbar > .page {
-	font-size: 1.5em;
-	font-weight: bold;
+	flex-grow: 2;
 	color: #333;
 }
 
 .nav-links {
 	list-style: none;
 	display: flex;
-	gap: 2em;
+	justify-content: space-around;
+	flex-grow: 1;
 	margin: 0;
 	padding: 0;
 }
@@ -85,6 +79,7 @@ div#wrapper {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
+	width: 100%;
 }
 
 div#wrapper .donation-buttons a {
@@ -116,6 +111,7 @@ section#donation-list > div.donation {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
+	font-size: 1rem;
 }
 
 section#donation-list > div.donation > div.info {
@@ -123,13 +119,15 @@ section#donation-list > div.donation > div.info {
 	border-left: 0.2rem solid white;
 	padding: 0.4rem 0rem 0rem 0.4rem;
 	display: flex;
+	max-width: 100%;
 	flex-direction: column;
 	color: #333;
 	align-content: center;
 }
 
 .donation-img {
-	width: 20rem;
+	min-width: 140px;
+	width: 20%;
 	height: auto;
 	border: 0.7rem ridge white;
 	margin-right: 0.7rem;
@@ -137,7 +135,7 @@ section#donation-list > div.donation > div.info {
 
 .nav-donation-buttons {
 	background-color: #ffffff;
-	padding: 1em 2em;
+	padding: 1rem 2rem;
 	display: flex;
 	justify-content: space-evenly;
 	align-content: center;
@@ -145,6 +143,7 @@ section#donation-list > div.donation > div.info {
 	position: sticky;
 	bottom: 0;
 	z-index: 10;
+	width: 100%;
 }
 /* DonationStyles */
 
@@ -153,6 +152,7 @@ section#donation-list > div.donation > div.info {
 	padding: 6rem 2rem;
 	color: white;
 	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+	width: 100%;
 }
 
 .hero h1 {
@@ -162,7 +162,7 @@ section#donation-list > div.donation > div.info {
 
 .hero p {
 	font-size: 1.5rem;
-	max-width: 800px;
+	max-width: 100%;
 	margin: 0 auto 2rem;
 }
 
@@ -194,6 +194,7 @@ section#donation-list > div.donation > div.info {
 .features {
 	background-color: white;
 	padding: 4rem 2rem;
+	width: 100%;
 }
 
 
@@ -203,14 +204,13 @@ section#donation-list > div.donation > div.info {
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 2rem;
-	max-width: 1200px;
+	width: 100%;
 	margin: 0 auto;
 }
 
 .feature-card {
 	flex: 1;
-	min-width: 250px;
-	max-width: 350px;
+	width: 100%;
 	background: #f8f9fa;
 	border-radius: 10px;
 	padding: 2rem;
@@ -239,6 +239,7 @@ section#donation-list > div.donation > div.info {
 	color: white;
 	padding: 4rem 2rem;
 	text-align: center;
+	width: 100%;
 }
 
 .stats-container {
@@ -246,13 +247,13 @@ section#donation-list > div.donation > div.info {
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 3rem;
-	max-width: 1200px;
+	width: 100%;
 	margin: 0 auto;
 }
 
 .stat-item {
 	flex: 1;
-	min-width: 200px;
+	width: 50%;
 }
 
 .stat-number {
@@ -264,6 +265,7 @@ section#donation-list > div.donation > div.info {
 .testimonials {
 	padding: 4rem 2rem;
 	background-color: #f8f9fa;
+	width: 100%;
 }
 
 .testimonial-container {
@@ -271,14 +273,13 @@ section#donation-list > div.donation > div.info {
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 2rem;
-	max-width: 1200px;
+	width: 100%;
 	margin: 0 auto;
 }
 
 .testimonial-card {
 	flex: 1;
-	min-width: 300px;
-	max-width: 350px;
+	width: 50%;
 	background: white;
 	border-radius: 10px;
 	padding: 2rem;
@@ -300,6 +301,7 @@ section#donation-list > div.donation > div.info {
 	padding: 5rem 2rem;
 	text-align: center;
 	align-content: center;
+	width: 100%;
 	background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
 	color: white;
 }
@@ -314,6 +316,7 @@ footer {
 	color: white;
 	padding: 2rem;
 	text-align: center;
+	width: 100%;
 }
 
 .social-links {
@@ -331,40 +334,23 @@ footer {
 	color: #4ecdc4;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-	.hero h1 {
-		font-size: 2.5rem;
-	}
-	
-	.hero p {
-		font-size: 1.2rem;
-	}
-	
-	.navbar {
-		padding: 1em;
-	}
-	
-	.nav-links {
-		gap: 1em;
-	}
-	
-	.section-title {
-		font-size: 2rem;
-	}
-	
-	.feature-card, .testimonial-card {
-		min-width: 100%;
-	}
-}
+
 
 /* Reset and base styles */
+html {
+	font-size: 100%;
+	width: 100%;
+}
 body{
 	margin: 0;
 	font-family: Arial, sans-serif;
 	position: relative;
 	height: 100vh;
-	overflow-x: hidden;
+	width: 100%;
+}
+
+* {
+	box-sizing: border-box;
 }
 
 /* Full-page background using a pseudo-element */
@@ -379,6 +365,7 @@ body::before {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-color: rgb(173, 216, 230);
+	background-size: 40%;
 	z-index: -1; /* Put it behind everything */
 	opacity: 1;	/* You can adjust this if you want a faded look */
 }
@@ -426,3 +413,58 @@ div.buttons > button {
 	margin-top: 0.3rem;
 }
 /* DonateStyles */
+
+/* Responsive Design */
+/* Typical Tables */
+@media (max-width: 768px) {
+	.hero h1 {
+		font-size: 2.5rem;
+	}
+	
+	.hero p {
+		font-size: 1.2rem;
+	}
+	
+	.navbar {
+		padding: 1rem;
+	}
+	
+	.nav-links {
+		gap: 1rem;
+	}
+	
+	.section-title {
+		font-size: 2rem;
+	}
+}
+/* Typical Smartphones */
+@media (max-width: 400px) {
+	.hero h1 {
+		font-size: 2.5rem;
+	}
+	
+	.hero p {
+		font-size: 1.2rem;
+	}
+	
+	.navbar {
+		padding: 0.9rem;
+	}
+	
+	.nav-links {
+		gap: 1rem;
+	}
+	
+	.section-title {
+		font-size: 2rem;
+	}
+
+	.stat-item {
+		width: 100%;
+	}
+
+	.testimonial-card {
+		width: 100%;
+	}
+}
+/* Responsive Design */

@@ -11,8 +11,7 @@
 <body>
 	<div id="wrapper">
 		<nav class="navbar">
-			<div class="logo">Campus Kind</div>
-			<div class="page">Donations</div>
+			<div class="logo">Campus Kind - Donations</div>
 			<ul class="nav-links">
 				<li><a href="index.html">Home</a></li>
 				<li><a href="about.html">About</a></li>
@@ -44,5 +43,30 @@
 		</div>
 	</div>
 	<script src="../donations.js" type="module"></script>
+	<script>
+	(function() {
+		const viewportWidth = document.documentElement.clientWidth;
+		const offenders = [];
+		
+		document.querySelectorAll('*').forEach(el => {
+			const rect = el.getBoundingClientRect();
+			if (rect.width > viewportWidth) {
+				offenders.push({
+					tag: el.tagName.toLowerCase(),
+					classList: [...el.classList],
+					width: rect.width
+				});
+			}
+		});
+
+		if (offenders.length) {
+			console.warn("⚠️ Elements causing horizontal scroll:");
+			console.table(offenders);
+			alert(offenders);
+		} else {
+			console.log("✅ No overflow elements detected");
+		}
+	})();
+	</script>
 </body>
 </html>
