@@ -17,7 +17,7 @@ function fetchDonations(filters = ["food"]) {
 
 function createImgElement(imgSource) {
 	const img = document.createElement("img");
-	img.setAttribute("class", "donationImg");
+	img.setAttribute("class", "donation-img");
 	if (imgSource == null) {
 		img.setAttribute("src", "../../icons/no-image-icon100.png");
 	} else {
@@ -37,23 +37,28 @@ function createDonationDiv(donation) {
 			div.appendChild(createImgElement(imgSource));
 		}
 	}
-	const contactNoSpan = document.createElement("span");
+
+	const infoDiv = document.createElement("div");
+	infoDiv.setAttribute("class", "info");
+	const contactNoSpan = document.createElement("div");
 	contactNoSpan.textContent = "Contact Number: " + contactNo;
-	div.appendChild(contactNoSpan);
-	const descriptionSpan = document.createElement("span");
+	infoDiv.appendChild(contactNoSpan);
+	const descriptionSpan = document.createElement("div");
 	descriptionSpan.textContent = "Description: " + description;
-	div.appendChild(descriptionSpan);
-	const typeSpan = document.createElement("span");
+	infoDiv.appendChild(descriptionSpan);
+	const typeSpan = document.createElement("div");
 	typeSpan.textContent = "Type: " + type;
-	div.appendChild(typeSpan);
-	const locationSpan = document.createElement("span");
+	infoDiv.appendChild(typeSpan);
+	const locationSpan = document.createElement("div");
 	locationSpan.textContent = "Location: " + slocation;
-	div.appendChild(locationSpan);
+	infoDiv.appendChild(locationSpan);
+	div.appendChild(infoDiv);
+
 	return div;
 }
 
 async function populateDonations() {
-	const listInterface = document.body.querySelector("#donationsList");
+	const listInterface = document.body.querySelector("section#donation-list");
 	listInterface.replaceChildren();
 	const donations = await fetchDonations([]);
 	for (const key of Object.keys(donations)) {
@@ -63,7 +68,7 @@ async function populateDonations() {
 }
 
 function addButtonListeners() {
-	var refreshDonationsBtn = document.body.querySelector("#fetchDonations");
+	var refreshDonationsBtn = document.body.querySelector("#fetch-donations");
 	if (!refreshDonationsBtn) {
 		console.error(`Could not find "fetchDonations" button.`);
 		return;

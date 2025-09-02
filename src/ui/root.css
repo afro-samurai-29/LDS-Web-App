@@ -1,278 +1,386 @@
+html {
+	font-size: 100%;
+}
 /* Home Page Specific Styles */
 
+/* SlideShowStyles */
+.slideshow-container {
+	display: block;       /* required to make margin work */
+	margin: 0 auto; 
+	max-width: 800px;
+	overflow: hidden;
+	border-radius: 1rem;
+	box-shadow: 0 0.4rem 1rem rgba(0,0,0,0.2);
+}
 
-/* Navbar styles */
+.mySlides {
+	display: none;
+	width: 100%;
+	height: 100%;
+}
+
+.mySlides img {
+	width: 100%;
+	height: auto;
+	border-radius: 1rem;
+}
+
+.fade {
+	animation: fadeEffect 2s;
+}
+
+@keyframes fadeEffect {
+	from { opacity: 0.4; }
+	to { opacity: 1; }
+}
+/* SlideShowStyles */
+
+/* NavBarStyles */
 .navbar {
-  background-color: #ffffff;
-  padding: 1em 2em;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+	background-color: #ffffff;
+	padding: 1em 2em;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	position: sticky;
+	top: 0;
+	z-index: 10;
 }
 
 .logo {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #333;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #333;
+}
+
+.navbar > .page {
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #333;
 }
 
 .nav-links {
-  list-style: none;
-  display: flex;
-  gap: 2em;
-  margin: 0;
-  padding: 0;
+	list-style: none;
+	display: flex;
+	gap: 2em;
+	margin: 0;
+	padding: 0;
 }
 
 .nav-links a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  transition: color 0.3s;
+	text-decoration: none;
+	color: #333;
+	font-weight: 500;
+	transition: color 0.3s;
 }
 
 .nav-links a:hover {
-  color: #0077cc;
+	color: #0077cc;
+}
+/* NavBarStyles */
+
+/* DonationStyles */
+div#wrapper {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
 }
 
+div#wrapper .donation-buttons a {
+	text-decoration: none;
+	color: white;
+	transition: color 0.3s;
+}
+
+.white-strip {
+	background-color: white;
+	min-height: 1rem;
+	width: 100%;
+}
+
+section#donation-list {
+	padding: 3rem 2rem;
+	background-color: #4ecdc4;
+	color: white;
+	width: 100%;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+section#donation-list > div.donation {
+	border-bottom: 0.2rem solid white;
+	padding: 0.7rem 0.4rem 0.7rem 0.4rem;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+section#donation-list > div.donation > div.info {
+	border-top: 0.2rem solid white;
+	border-left: 0.2rem solid white;
+	padding: 0.4rem 0rem 0rem 0.4rem;
+	display: flex;
+	flex-direction: column;
+	color: #333;
+	align-content: center;
+}
+
+.donation-img {
+	width: 20rem;
+	height: auto;
+	border: 0.7rem ridge white;
+	margin-right: 0.7rem;
+}
+
+.nav-donation-buttons {
+	background-color: #ffffff;
+	padding: 1em 2em;
+	display: flex;
+	justify-content: space-evenly;
+	align-content: center;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	position: sticky;
+	bottom: 0;
+	z-index: 10;
+}
+/* DonationStyles */
+
 .hero {
-    text-align: center;
-    padding: 6rem 2rem;
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+	text-align: center;
+	padding: 6rem 2rem;
+	color: white;
+	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
+	font-size: 3.5rem;
+	margin-bottom: 1rem;
 }
 
 .hero p {
-    font-size: 1.5rem;
-    max-width: 800px;
-    margin: 0 auto 2rem;
+	font-size: 1.5rem;
+	max-width: 800px;
+	margin: 0 auto 2rem;
 }
 
 .cta-button {
-    background-color: #ff6b6b;
-    color: white;
-    border: none;
-    padding: 1rem 2.5rem;
-    font-size: 1.2rem;
-    border-radius: 50px;
-    font-weight: bold;
-    transition: all 0.3s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	background-color: #ff6b6b;
+	color: white;
+	border: none;
+	padding: 1rem 2.5rem;
+	font-size: 1.2rem;
+	border-radius: 50px;
+	font-weight: bold;
+	transition: all 0.3s;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .cta-button:hover {
-    background-color: #ff5252;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+	background-color: #ff5252;
+	transform: translateY(-3px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
-    color: #333;
+	text-align: center;
+	font-size: 2.5rem;
+	margin-bottom: 3rem;
+	color: #333;
 }
 
 .features {
-    background-color: white;
-    padding: 4rem 2rem;
+	background-color: white;
+	padding: 4rem 2rem;
 }
 
+
+
 .features-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
 .feature-card {
-    flex: 1;
-    min-width: 250px;
-    max-width: 350px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 2rem;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+	flex: 1;
+	min-width: 250px;
+	max-width: 350px;
+	background: #f8f9fa;
+	border-radius: 10px;
+	padding: 2rem;
+	text-align: center;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s;
 }
 
 .feature-card:hover {
-    transform: translateY(-10px);
+	transform: translateY(-10px);
 }
 
 .feature-icon {
-    font-size: 3rem;
-    color: #4ecdc4;
-    margin-bottom: 1rem;
+	font-size: 3rem;
+	color: #4ecdc4;
+	margin-bottom: 1rem;
 }
 
 .feature-card h3 {
-    color: #333;
-    margin-bottom: 1rem;
+	color: #333;
+	margin-bottom: 1rem;
 }
 
 .stats {
-    background-color: #4ecdc4;
-    color: white;
-    padding: 4rem 2rem;
-    text-align: center;
+	background-color: #4ecdc4;
+	color: white;
+	padding: 4rem 2rem;
+	text-align: center;
 }
 
 .stats-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 3rem;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
 .stat-item {
-    flex: 1;
-    min-width: 200px;
+	flex: 1;
+	min-width: 200px;
 }
 
 .stat-number {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+	font-size: 3rem;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
 }
 
 .testimonials {
-    padding: 4rem 2rem;
-    background-color: #f8f9fa;
+	padding: 4rem 2rem;
+	background-color: #f8f9fa;
 }
 
 .testimonial-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
 .testimonial-card {
-    flex: 1;
-    min-width: 300px;
-    max-width: 350px;
-    background: white;
-    border-radius: 10px;
-    padding: 2rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+	flex: 1;
+	min-width: 300px;
+	max-width: 350px;
+	background: white;
+	border-radius: 10px;
+	padding: 2rem;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .testimonial-text {
-    font-style: italic;
-    margin-bottom: 1.5rem;
-    color: #555;
+	font-style: italic;
+	margin-bottom: 1.5rem;
+	color: #555;
 }
 
 .testimonial-author {
-    font-weight: bold;
-    color: #333;
+	font-weight: bold;
+	color: #333;
 }
 
 .final-cta {
-    padding: 5rem 2rem;
-    text-align: center;
-    background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
-    color: white;
+	padding: 5rem 2rem;
+	text-align: center;
+	align-content: center;
+	background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+	color: white;
 }
 
 .final-cta h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
+	font-size: 2.5rem;
+	margin-bottom: 1.5rem;
 }
 
 footer {
-    background-color: #333;
-    color: white;
-    padding: 2rem;
-    text-align: center;
+	background-color: #333;
+	color: white;
+	padding: 2rem;
+	text-align: center;
 }
 
 .social-links {
-    margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 .social-links a {
-    color: white;
-    font-size: 1.5rem;
-    margin: 0 0.5rem;
-    transition: color 0.3s;
+	color: white;
+	font-size: 1.5rem;
+	margin: 0 0.5rem;
+	transition: color 0.3s;
 }
 
 .social-links a:hover {
-    color: #4ecdc4;
+	color: #4ecdc4;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-    
-    .hero p {
-        font-size: 1.2rem;
-    }
-    
-    .navbar {
-        padding: 1em;
-    }
-    
-    .nav-links {
-        gap: 1em;
-    }
-    
-    .section-title {
-        font-size: 2rem;
-    }
-    
-    .feature-card, .testimonial-card {
-        min-width: 100%;
-    }
+	.hero h1 {
+		font-size: 2.5rem;
+	}
+	
+	.hero p {
+		font-size: 1.2rem;
+	}
+	
+	.navbar {
+		padding: 1em;
+	}
+	
+	.nav-links {
+		gap: 1em;
+	}
+	
+	.section-title {
+		font-size: 2rem;
+	}
+	
+	.feature-card, .testimonial-card {
+		min-width: 100%;
+	}
 }
-body{
-  background-image: url(first.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-}
+
 /* Reset and base styles */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  position: relative;
-  height: 100vh;
-  overflow-x: hidden;
+body{
+	margin: 0;
+	font-family: Arial, sans-serif;
+	position: relative;
+	height: 100vh;
+	overflow-x: hidden;
 }
 
 /* Full-page background using a pseudo-element */
 body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-image: url("first.jpg");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: rgb(173, 216, 230);
-  z-index: -1; /* Put it behind everything */
-  opacity: 1;  /* You can adjust this if you want a faded look */
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-image: url("first.jpg");
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-color: rgb(173, 216, 230);
+	z-index: -1; /* Put it behind everything */
+	opacity: 1;	/* You can adjust this if you want a faded look */
 }
 /*hiding don't worry about this*/
 input[type="file"] {

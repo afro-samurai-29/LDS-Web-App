@@ -3,15 +3,32 @@
 <head>
 	<link href="../../icons/icon.png" rel="icon"/>
 	<link href="./root.css" rel="stylesheet"/>
-	<link href="./donations.css" rel="stylesheet"/>
 </head>
-	<center>
-		<h1>Donations</h1>
-	</center>
-	<div id="donationsList"></div>
-	<div class="buttons">
-		<button id="switch"><a href="./donate.html">Switch</a></button>
-		<button id="fetchDonations">Refresh Donations</button>
+<body>
+	<div id="wrapper">
+		<nav class="navbar">
+				<div class="logo">Campus Kind</div>
+				<div class="page">Donations</div>
+				<ul class="nav-links">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="donate.html">Donate</a></li>
+				</ul>
+		</nav>
+		<section class="hero">
+			<h1>Support Your Fellow Students</h1>
+			<p>Join us in making campus life better for everyone through kindness and generosity</p>
+			<button class="cta-button" onclick="window.open(window.location.href.replace(/donations.html/g, 'donate.html'), '_top')" type="button">Make a Difference</button>
+		</section>
+		<section class="white-strip"></section>
+		<section id="donation-list"></section>
+		<div class="nav-donation-buttons">
+			<ul class="nav-links">
+				<li><a href="switch">Switch</a></li>
+				<li><a href="#" id="fetch-donations">Refresh Donations</a></li>
+			</ul>
+		</div>
 	</div>
 	<script src="../donations.js" type="module"></script>
+</body>
 </html>
