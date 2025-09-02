@@ -53,7 +53,7 @@ function getFileDataURL(file) {
 }
 
 async function getImages() {
-	var input = document.body.querySelector("div#info input#donationImg");
+	var input = document.body.querySelector("div#info input#donation-img");
 	var imgFiles = input.files;
 	const imgs = [];
 	for (const file of imgFiles) {
@@ -73,7 +73,7 @@ async function getImages() {
 }
 
 function getDetails() {
-	var contactNo = document.body.querySelector("div#info input#contactNo");
+	var contactNo = document.body.querySelector("div#info input#contact-no");
 	if (contactNo && contactNo.checkValidity()) {
 		contactNo = contactNo.value
 	} else {
@@ -85,7 +85,7 @@ function getDetails() {
 	} else {
 		description = null
 	}
-	var donationType = [...document.body.querySelectorAll("div#info fieldset div.donationType input")].filter((e) => {
+	var donationType = [...document.body.querySelectorAll("div#info fieldset div.donation-type input")].filter((e) => {
 		return e.checked;
 	});
 	if (donationType.length >= 1) {
@@ -93,7 +93,7 @@ function getDetails() {
 	} else {
 		donationType = null
 	}
-	var donationLocation = [...document.body.querySelectorAll("div#info fieldset div.donationLocation input")].filter((e) => {
+	var donationLocation = [...document.body.querySelectorAll("div#info fieldset div.donation-location input")].filter((e) => {
 		return e.checked;
 	});
 	if (donationLocation.length >= 1) {

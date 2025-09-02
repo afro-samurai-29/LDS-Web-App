@@ -21,21 +21,17 @@
 	<div id="info">
 		<div class="img-select">
 			<!-- Motivational Statement -->
-			<p>
-				Your donation can make a big difference! Please upload a clear picture of your item(s) so we can properly share your generosity.
-			</p>
+			<p>Your donation can make a big difference! Please upload a clear picture of your item(s) so we can properly share your generosity.</p>
 			<!-- File Upload Button centered -->
-			<label for="donationImg" class="cta-button">
-			Upload Image
-			</label>
-			<input type="file" id="donationImg" name="donationImg" accept="image/png, image/jpg, image/jpeg"/>
+			<label for="donation-img" class="cta-button">Upload Image</label>
+			<input type="file" id="donation-img" name="donation-img" accept="image/png, image/jpg, image/jpeg"/>
 			<!-- Display selected file name -->
-			<p id="fileName" style="margin-top:0.9rem; color:white;">No file chosen</p>
+			<p id="fileName">No file chosen</p>
 		</div>
 		<div>
-			<label for="contactNo">Contact Number:</label>
+			<label for="contact-no">Contact Number:</label>
 			<br>
-			<input type="tel" name="contactNo" id="contactNo" pattern="[0-9]{3}[ \-]{0,1}[0-9]{3}[ \-]{0,1}[0-9]{4}" required>
+			<input type="tel" name="contact-no" id="contact-no" pattern="[0-9]{3}[ \-]{0,1}[0-9]{3}[ \-]{0,1}[0-9]{4}" required>
 		</div>
 		<div>
 			<label for="description">Description:</label>
@@ -45,16 +41,16 @@
 		<div>
 			<fieldset>
 				<legend>Please select the type of donation you would like to make</legend>
-				<div class="donationType">
-					<input type="radio" class="donationType item" name="type" value="food" checked/>
+				<div class="donation-type">
+					<input type="radio" class="donation-type item" name="type" value="food" checked/>
 					<label for="food">Food</label>
 				</div>
-				<div class="donationType">
-					<input type="radio" class="donationType item" name="type" value="clothes"/>
+				<div class="donation-type">
+					<input type="radio" class="donation-type item" name="type" value="clothes"/>
 					<label for="clothes">Clothes</label>
 				</div>
-				<div class="donationType">
-					<input type="radio" class="donationType item" name="type" value="utility"/>
+				<div class="donation-type">
+					<input type="radio" class="donation-type item" name="type" value="utility"/>
 					<label for="clothes">Utility Tool</label>
 				</div>
 			</fieldset>
@@ -62,16 +58,16 @@
 		<div>
 			<fieldset>
 				<legend>Please select the location you would like to hand over the donation at</legend>
-				<div class="donationLocation">
-					<input type="radio" class="donationLocation item" name="location" value="wss" checked/>
+				<div class="donation-location">
+					<input type="radio" class="donation-location item" name="location" value="wss" checked/>
 					<label for="wss">WSS</label>
 				</div>
-				<div class="donationLocation">
-					<input type="radio" class="donationLocation item" name="location" value="flowerHall"/>
+				<div class="donation-location">
+					<input type="radio" class="donation-location item" name="location" value="flowerHall"/>
 					<label for="flowerHall">Flower Hall</label>
 				</div>
-				<div class="donationLocation">
-					<input type="radio" class="donationLocation item" name="location" value="greatHall"/>
+				<div class="donation-location">
+					<input type="radio" class="donation-location item" name="location" value="greatHall"/>
 					<label for="greatHall">Great Hall</label>
 				</div>
 			</fieldset>
@@ -83,7 +79,7 @@
 	</div>
 	<script src="../donate.js" type="module"></script>
 	<script>
-		const input = document.getElementById('donationImg');
+		const input = document.getElementById('donation-img');
 		const fileNameDisplay = document.getElementById('fileName');
 		input.addEventListener('change', () => {
 			if(input.files.length > 0){
