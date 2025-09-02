@@ -274,3 +274,7 @@ body::before {
   z-index: -1; /* Put it behind everything */
   opacity: 1;  /* You can adjust this if you want a faded look */
 }
+/*hiding don't worry about this*/
+input[type="file"] {
+    display: none;
+}
