@@ -355,20 +355,26 @@ body{
 
 /* Full-page background using a pseudo-element */
 body::before {
-	content: "";
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	background-image: url("first.jpg");
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-color: rgb(173, 216, 230);
-	background-size: 40%;
-	z-index: -1; /* Put it behind everything */
-	opacity: 1;	/* You can adjust this if you want a faded look */
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  
+  /* Background image + gradient overlay */
+  background: 
+    linear-gradient(rgba(255, 183, 77, 0.85), rgba(255, 111, 97, 0.85)),
+    url("first.jpg");
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  z-index: -1;
+  opacity: 1;
 }
+
 
 /* DonateStyles */
 div#info {
@@ -468,3 +474,88 @@ div.buttons > button {
 	}
 }
 /* Responsive Design */
+
+/* ======================= */
+/* Donate Page Enhancements */
+/* ======================= */
+
+/* Form Container */
+#info {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  max-width: 700px;
+  margin: 2rem auto;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Input fields */
+#info input[type="tel"],
+#info textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#info input[type="tel"]:focus,
+#info textarea:focus {
+  outline: none;
+  border-color: #4ecdc4;
+  box-shadow: 0 0 6px rgba(78,205,196,0.5);
+}
+
+/* Radio buttons grouped neatly */
+fieldset {
+  border: 2px solid #4ecdc4;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+  background: #f8f9fa;
+}
+
+legend {
+  font-weight: bold;
+  color: #333;
+  padding: 0 0.5rem;
+}
+
+/* Buttons */
+.buttons button {
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #ff6b6b, #ff9a9e);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buttons button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Link inside button */
+#switch a {
+  text-decoration: none;
+  color: white;
+}
+
+/* File upload display */
+#fileName {
+  font-style: italic;
+  color: #555;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
