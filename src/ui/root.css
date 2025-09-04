@@ -114,7 +114,7 @@
 	margin-bottom: 0.3rem;
 }
 
-:is(.white-strip.filtering .active-filters .item, #claim-donation) {
+:is(.white-strip.filtering .active-filters .item, #claim-donation, #donation-chat) {
 	font-size: 1.1rem;
 	text-align: center;
 	padding: 0.8rem 2rem;
@@ -131,11 +131,11 @@
 	margin-right: 0.3rem;
 }
 
-#claim-donation {
+#claim-donation, #donation-chat {
 	padding: 0.5rem 2rem;
 	max-height: 3rem;
 }
-#claim-donation:hover {
+#claim-donation:hover, #donation-chat:hover {
 	transform: translateY(-3px);
 	box-shadow: 0 6px 12px rgba(0,0,0,0.2);
 }

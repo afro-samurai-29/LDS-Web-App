@@ -113,11 +113,8 @@ async function createDonationDiv(donation, type = "fetch-donations") {
 		});
 	} else {
 		div.innerHTML += `
-			<button id="donation-chat">Claim</button>
+			<button id="donation-chat" onclick="window.open(window.location.href.replace(/donations.html/g, 'chat.html?id=${donationId}'), '_top')">Chat</button>
 		`;
-		div.querySelector("#donation-chat").addEventListener("click", (ev) => {
-			claimDonation(ev.target.parentElement.id);
-		});
 	}
 	return div;
 }
