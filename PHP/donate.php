@@ -4,27 +4,27 @@ require_once "constants.php";
 
 class DonateClass {
 	private $mysqli;
+	private $uuid;
 	private $attributes = [
 		"0" => "contactNo",
 		"1" => "description",
 		"2" => "type",
-		"3" => "location"
+		"3" => "location",
+		"4" => "image"
 	];
 
 	function __construct() {
 		global $mysqli;
+		global $uuid;
 		$this->mysqli = $mysqli;
-	}
-
-	private function generateUuid($length = 16) {
-		return random_bytes($length);
+		$this->uuid = $uuid;
 	}
 
 	# Source (Modified to account for gibberish that has little to no spaces): "https://codereview.stackexchange.com/questions/868/calculating-entropy-of-a-string/926#926"
 	private function entropyCheck($string) {
 		$characterDictionary = [];
 		$spaceCount = 0;
-		forEach(str_split(strtolower($string)) as $no => $char) {
+	forEach(str_split(strtolower($string)) as $no => $char) {
 			if ($char == " ") {
 				$spaceCount++;
 				continue;
@@ -55,9 +55,7 @@ class DonateClass {
 
 	private function validateData($data) {
 		forEach ($data as $key => $value) {
-			if ($key == "images" && count($value) == 0) {
-				continue;
-			} else if ($key != "images" && ($value == "" || ! in_array($key, $this->attributes))) {
+			if ($value == "" || ! in_array($key, $this->attributes)) {
 				header("HTTP/1.1 531 Post failed", true);
 				header("Status: 531 Post failed", true);
 				die();
@@ -78,33 +76,20 @@ class DonateClass {
 	public function addDonation($data) {
 		$data["description"] = str_replace("  ", " ", trim($data["description"]));
 		$this->validateData($data);
-		$uuid;
-		if (isset($_COOKIE["session-id"])) {
-			$uuid = hex2bin(trim($_COOKIE["session-id"]));
-		} else {
-	    		$uuid = $this->generateUuid();
-		}
-		$img = $data["images"];
-		$img = json_encode($img);
+		$img = $data["image"];
 		$params = [
-			"0" => $uuid,
+			"0" => $this->uuid,
 			"1" => $img,
 			"2" => $data["contactNo"],
 			"3" => $data["description"],
 			"4" => $data["type"],
 			"5" => $data["location"]
 		];
-		$stmt = $this->mysqli->prepare("INSERT INTO donations (uuid, donationImages, contactNumber, donationDescription, donationType, donationLocation) VALUES(?, ?, ?, ?, ?, ?)");
+		$stmt = $this->mysqli->prepare("INSERT INTO donations (donorUuid, donationImage, contactNumber, donationDescription, donationType, donationLocation) VALUES(?, ?, ?, ?, ?, ?)");
 		MySQLClass::dynamicBindParams($stmt, $params);
-		if ($stmt->execute()) {
-			setcookie("session-id", bin2hex($params["0"]), [
-				'expires'  => time() + 86400,	// 1 day
-				'path'     => '/',
-				'secure'   => true,	// only over HTTPS
-				'httponly' => true,
-				'samesite' => 'Strict'
-			]);
-			exit();
+		$result = $stmt->execute();
+		if ($result == true) {
+			return $result;
 		} else {
 			header("HTTP/1.1 534 Failed to register donation", true);
 			header("Status: 534 Failed to register donation", true);

@@ -1,92 +1,145 @@
 import { PHPSERVER, DONATIONLOCATIONS, FILTERINGOPTIONS } from "./constants.js"
 
-function fetchDonations(filters = []) {
+let donationList = document.body.querySelector("section#donation-list");
+let categoryFilter = document.body.querySelector("section.white-strip.filtering .filter-controls select#category-filter");
+let activeFilters = document.body.querySelector("section.white-strip.filtering .active-filters");
+let fetchBtns = [
+	document.body.querySelector("#fetch-donations"),
+	document.body.querySelector("#fetch-made-donations"),
+	document.body.querySelector("#fetch-claimed-donations")
+];
+let LOCK = Promise.resolve(true);
+
+function fetchDonations(type) {
+	const filters = [...activeFilters.querySelectorAll("button")].map((e) => {
+		return e.value;
+	})
 	return fetch(`${PHPSERVER}/donations.php`, {
 		method: "POST",
 		body: JSON.stringify({
+			"type": type,
 			"filters": filters
 		}),
 		headers: {
 			"Content-Type": "application/json; charset=UTF-8"
 		}
 	}).then(async (response) => {
+		if (response.status != 200) {
+			return null;
+		}
 		response = await response.text();
 		return JSON.parse(response);
 	});
 }
 
-function createImgElement(imgSource) {
-	const img = document.createElement("img");
-	img.setAttribute("class", "donation-img");
-	if (imgSource == null) {
-		img.setAttribute("src", "../../icons/no-image-icon100.png");
-	} else {
-		img.setAttribute("src", imgSource);
-	}
-	return img;
-}
-
-function createDonationDiv(donation) {
-	const imgSources = JSON.parse(donation[0]), contactNo = donation[1], description = donation[2], type = donation[3], slocation = donation[4];
-	const div = document.createElement("div");
-	div.setAttribute("class", "donation");
-	if (imgSources == null) {
-			div.appendChild(createImgElement(imgSources));
-	} else {
-		for (const imgSource of imgSources) {
-			div.appendChild(createImgElement(imgSource));
+function fetchImage(donationId) {
+	return fetch(`${PHPSERVER}/donations.php`, {
+		method: "POST",
+		body: JSON.stringify({
+			"type": "fetch-image",
+			"donationId": donationId
+		})
+	}).then(async (response) => {
+		if (response.status != 200) {
+			return null;
 		}
-	}
-
-	const infoDiv = document.createElement("div");
-	infoDiv.setAttribute("class", "info");
-	const contactNoSpan = document.createElement("div");
-	contactNoSpan.textContent = "Contact Number: " + contactNo;
-	infoDiv.appendChild(contactNoSpan);
-	const descriptionSpan = document.createElement("div");
-	descriptionSpan.textContent = "Description: " + description;
-	infoDiv.appendChild(descriptionSpan);
-	const typeSpan = document.createElement("div");
-	typeSpan.textContent = "Type: " + type;
-	infoDiv.appendChild(typeSpan);
-	const locationSpan = document.createElement("div");
-	locationSpan.textContent = "Location: " + slocation;
-	infoDiv.appendChild(locationSpan);
-	div.appendChild(infoDiv);
-	return div;
+		response = await response.text();
+		return response;
+	});
 }
 
-async function populateDonations() {
-	const donationList = document.body.querySelector("section#donation-list");
+function claimDonation(donationId) {
+	return fetch(`${PHPSERVER}/donations.php`, {
+		method: "POST",
+		body: JSON.stringify({
+			"type": "claim-donation",
+			"donationId": donationId
+		})
+	}).then(async (response) => {
+		if (response.status != 200) {
+			return null;
+		}
+		alert("Claimed donation.")
+		LOCK.then(() => { return populateDonations(); });
+		return response;
+	});
+}
+
+function removeDonations() {
 	donationList.replaceChildren();
+}
+
+function addLoader() {
+	removeLoader();
+	categoryFilter.disabled = true;
 	const loader = document.createElement("div");
 	loader.setAttribute("class", "loader");
 	loader.setAttribute("aria-label", "Loading donations");
 	donationList.appendChild(loader);
-	const filters = [...document.body.querySelectorAll(`.white-strip.filtering .filtered-items .item`)].map((e) => {
-		return e.value;
-	});
-	const donations = await fetchDonations(filters);
-	donationList.removeChild(loader);
-	if (Object.keys(donations).length == 0) {
-		donationList.innerHTML = `<div class="no-results">No donations match your filters.</div>`;
+}
+
+function removeLoader() {
+	const loader = donationList.querySelector("div.loader");
+	if (loader) {
+		loader.remove();
 	}
-	for (const donation of Object.values(donations)) {
-		const imgSource = JSON.parse(donation[0])[0], contactNo = donation[1], description = donation[2], type = donation[3], slocation = donation[4];
-		const div = document.createElement("div");
-		div.setAttribute("class", "donation");
-		div.innerHTML = `
-			<img src="${imgSource || 'no-image-icon50.png'}" alt="${type}" class="donation-img">
-			<div class="info">
-				<strong>${FILTERINGOPTIONS[type]}</strong>
-				<strong>Donation Location       : ${DONATIONLOCATIONS[slocation]}</strong>
-				<strong>Donation Type           : ${FILTERINGOPTIONS[type]}</strong>
-				<strong>Contact No              : ${contactNo}</strong>
-				<p>${description}</p>
-			</div>
+}
+
+async function createDonationDiv(donation, type = "fetch-donations") {
+	const donationId = donation[0], contactNo = donation[1], description = donation[2], category = donation[3], slocation = donation[4];
+	const imgResource = await fetchImage(donationId);
+	const div = document.createElement("div");
+	div.setAttribute("class", "donation");
+	div.setAttribute("id", donationId);
+	div.innerHTML = `
+		<img src="${imgResource || 'no-image-icon50.png'}" alt="${category}" class="donation-img">
+		<div class="info">
+			<strong>${FILTERINGOPTIONS[category]}</strong>
+			<strong>Donation Location:</strong>
+			${DONATIONLOCATIONS[slocation]}
+			<strong>Donation Category:</strong>
+			${FILTERINGOPTIONS[category]}
+			<strong>Contact Number:</strong>
+			${contactNo}
+			<p>${description}</p>
+		</div>
+	`
+	if (type == "fetch-donations") {
+		div.innerHTML += `
+			<button id="claim-donation">Claim</button>
 		`;
-		donationList.appendChild(div);
+		div.querySelector("#claim-donation").addEventListener("click", (ev) => {
+			claimDonation(ev.target.parentElement.id);
+		});
+	} else {
+		div.innerHTML += `
+			<button id="donation-chat">Claim</button>
+		`;
+		div.querySelector("#donation-chat").addEventListener("click", (ev) => {
+			claimDonation(ev.target.parentElement.id);
+		});
 	}
+	return div;
+}
+
+async function populateDonations(type = "fetch-donations") {
+	removeDonations();
+	addLoader();
+	return fetchDonations(type).then(async (donations) => {
+		removeDonations();
+		if (donations == null || Object.keys(donations).length == 0) {
+			donationList.innerHTML = `<div class="no-results">No donations match your filters.</div>`;
+			categoryFilter.disabled = false;
+			return;
+		}
+		addLoader();
+		for (const donation of Object.values(donations)) {
+			const div = await createDonationDiv(donation, type);
+			donationList.appendChild(div);
+		}
+		removeLoader();
+		categoryFilter.disabled = false;
+	});
 }
 
 function addFilteringOption(parentElement, optionValue) {
@@ -96,8 +149,8 @@ function addFilteringOption(parentElement, optionValue) {
 	parentElement.appendChild(optionSelect);
 }
 
-function addToFiltered(filteredList, option) {
-	if (filteredList.querySelector(`[value="${option.value}"]`)) { return; }
+function addActiveFilter(option) {
+	if (activeFilters.querySelector(`[value="${option.value}"]`)) { return; }
 	const optionBtn = document.createElement("button");
 	optionBtn.setAttribute("class", "item");
 	optionBtn.setAttribute("title", "Click on the relevant button to remove a filtering option from those selected.");
@@ -106,39 +159,64 @@ function addToFiltered(filteredList, option) {
 	optionBtn.addEventListener("click", (ev) => {
 		option.selected = false;
 		ev.target.remove();
+		LOCK.then(() => { return populateDonations(); });
 	});
-	filteredList.appendChild(optionBtn);
+	activeFilters.appendChild(optionBtn);
+	LOCK.then(() => { return populateDonations(); });
+}
+
+function removeActiveFilters() {
+	activeFilters.replaceChildren();
+	LOCK.then(() => { return populateDonations(); });
 }
 
 async function addFilteringOptions() {
-	const filteringStrip = document.body.querySelector(".white-strip .filtering-items");
-	const filteredList = document.body.querySelector(".white-strip .filtered-items");
 	for (const optionValue of Object.keys(FILTERINGOPTIONS)) {
-		addFilteringOption(filteringStrip, optionValue);
+		addFilteringOption(categoryFilter, optionValue);
 	}
-	filteringStrip.addEventListener("change", (ev) => {
+	categoryFilter.addEventListener("change", (ev) => {
 		const options = [...ev.target.querySelectorAll(`option`)];
 		for (const option of options) {
-			if (option.selected && option.value != "") {
-				addToFiltered(filteredList, option);
+			if (option.selected) {
+				addActiveFilter(option);
 			}
 		}
 	});
 }
 
-function addButtonListeners() {
-	var refreshDonationsBtn = document.body.querySelector("#fetch-donations");
-	if (!refreshDonationsBtn) {
-		console.error(`Could not find "fetchDonations" button.`);
-		return;
+function highlightButton(highlightBtn) {
+	for (const btn of fetchBtns) {
+		btn.style.color = "#333";
 	}
-	refreshDonationsBtn.addEventListener("click", () => {
-		populateDonations();
-	});
+	highlightBtn.style.color = "#4ecdc4";
+}
+
+function addButtonListeners() {
+	const clearFiltersBtn = document.getElementById("clear-filters");
+	fetchBtns[0].style.color = "#4ecdc4"
+	for (const btn of fetchBtns) {
+		if (!btn) {
+			console.error(`Could not find a button.`);
+			return;
+		} else {
+			btn.addEventListener("click", (ev) => {
+				highlightButton(btn);
+				LOCK.then(() => { return populateDonations(ev.target.id); });
+			});
+		}
+	}
+	if (!clearFiltersBtn) {
+		console.error(`Could not find "clear-filters" button.`);
+		return;
+	} else {
+		clearFiltersBtn.addEventListener("click", () => {
+			removeActiveFilters();
+		});
+	}
 }
 
 window.addEventListener("load", () => {
 	addButtonListeners();
-	populateDonations();
 	addFilteringOptions();
+	LOCK.then(() => { return populateDonations(); });
 });

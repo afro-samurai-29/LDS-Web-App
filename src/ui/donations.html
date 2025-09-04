@@ -24,12 +24,37 @@
 			<button class="cta-button" onclick="window.open(window.location.href.replace(/donations.html/g, 'donate.html'), '_top')" type="button">Make a Difference</button>
 		</section>
 		<section class="white-strip filtering">
-			<label for="filtering">Please choose what options to filter for:</label>
-			<select autofocus name="filtering" class="filtering-items">
-				<option value="">--Please select an option to add it--</option>
-			</select>
-			<div class="filtered-items"></div>
+			<div class="filter-header">
+				<h2>Filter Donations</h2>
+				<button id="clear-filters" class="clear-filters-btn">Clear All</button>
+			</div>
+			<div class="filter-controls">
+				<div class="filter-group">
+					<label for="category-filter">Category</label>
+					<select id="category-filter" class="filter-select" multiple>
+					</select>
+				</div>
+				<div class="filter-group" style="display:none">
+					<label for="location-filter">Campus Location</label>
+					<select id="location-filter" class="filter-select" multiple>
+					</select>
+				</div>
+			</div>
+			<div class="active-filters" aria-live="polite">
+				<!-- Active filters will display here dynamically -->
+			</div>
 		</section>
+		<div class="nav-donation-type-buttons">
+			<ul class="nav-links" selected="yes">
+				<li><a href="javascript:void(0)" id="fetch-donations">All Donations</a></li>
+			</ul>
+			<ul class="nav-links" selected="no">
+				<li><a href="javascript:void(0)" id="fetch-made-donations">Made Donations</a></li>
+			</ul>
+			<ul class="nav-links" selected="no">
+				<li><a href="javascript:void(0)" id="fetch-claimed-donations">Claimed Donations</a></li>
+			</ul>
+		</div>
 		<section id="donation-list">
 		</section>
 		<section class="white-strip"></section>
@@ -42,11 +67,6 @@
 			</div>
 			<p>&copy; 2025 Campus Kind. All rights reserved.</p>
 		</footer>
-		<div class="nav-donation-buttons">
-			<ul class="nav-links">
-				<li><a href="#" id="fetch-donations">Refresh Donations</a></li>
-			</ul>
-		</div>
 	</div>
 	<script src="../donations.js" type="module"></script>
 </body>

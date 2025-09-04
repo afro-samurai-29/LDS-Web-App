@@ -5,15 +5,35 @@ ini_set("display_errors", true);
 $username = "%placeholder%";
 $database = "%dbplaceholder%";
 
+function generateUuid($length = 16) {
+	return random_bytes($length);
+}
+
+
 class MySQLClass {
 	public $mysqli;
+	public $uuid;
 	public $tables = [
 		"0" => "donations"
 	];
 
+
 	function __construct() {
 		global $username, $database;
 		$this->mysqli = new mysqli("localhost", $username, $username, $database);
+		if (isset($_COOKIE["session-id"])) {
+			$this->uuid = hex2bin(trim($_COOKIE["session-id"]));
+		} else {
+			$this->uuid = generateUuid();
+			setcookie("session-id", bin2hex($this->uuid), [
+				'expires'  => time() + 86400 * 30,	// 30 day
+				'path'     => '/',
+				'secure'   => true,	// only over HTTPS
+				'httponly' => true,
+				'samesite' => 'Strict'
+			]);
+		}
+		
 		if ($this->mysqli->connect_error) {
 			header("HTTP/1.1 521 Failed db connection", true);
 			header("Status: 521 Failed db connection", true);
@@ -66,6 +86,8 @@ class MySQLClass {
 	}
 }
 
-$mysqli = (new MySQLClass())->mysqli;
+$mysqliClass = new MySQLClass();
+$mysqli = $mysqliClass->mysqli;
+$uuid = $mysqliClass->uuid;
 
 ?>

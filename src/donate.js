@@ -1,4 +1,4 @@
-import { PHPSERVER } from "./constants.js"
+import { PHPSERVER, DONATIONLOCATIONS, FILTERINGOPTIONS } from "./constants.js";
 
 const fileTypes = [
 	"image/jpeg",
@@ -12,11 +12,11 @@ function validFileType(file) {
 	return fileTypes.includes(file.type);
 }
 
-function sendDonation(images, contactNo, description, type, slocation) {
+function sendDonation(image, contactNo, description, type, slocation) {
 	return fetch(`${PHPSERVER}/donate.php`, {
 		method: "POST",
 		body: JSON.stringify({
-			"images": images,
+			"image": image,
 			"contactNo": contactNo,
 			"description": description,
 			"type": type,
@@ -28,10 +28,12 @@ function sendDonation(images, contactNo, description, type, slocation) {
 		credentials: "include"
 	}).then(async (response) => {
 		if (response.status != 200) {
+			alert("Failed to send donation.")
 			console.error(`Failed to add donation.`);
 			return null;
 		}
 		response = await response.text();
+		alert("Successfully sent donation.")
 		return response;
 	});
 }
@@ -56,24 +58,20 @@ function getFileDataURL(file) {
 	});
 }
 
-async function getImages() {
+async function getImage() {
 	var input = document.body.querySelector("div#info input#donation-img");
-	var imgFiles = input.files;
-	const imgs = [];
-	for (const file of imgFiles) {
-		if (!validFileType(file)) {
-			console.error(`Please only submit images of type "jpeg", "jpg", "png", or "webp".`);
-			input.value = "";
-			return null;
-		}
-		const dataURL = await getFileDataURL(file);
-		if (dataURL == null) {
-			input.value = "";
-			return null;
-		}
-		imgs.push(dataURL);
+	var imgFile = input.files[0];
+	if (!imgFile || !validFileType(imgFile)) {
+		console.error(`Please only submit images of type "jpeg", "jpg", "png", or "webp".`);
+		input.value = "";
+		return null;
 	}
-	return imgs;
+	const dataURL = await getFileDataURL(imgFile);
+	if (dataURL == null) {
+		input.value = "";
+		return null;
+	}
+	return dataURL;
 }
 
 function getDetails() {
@@ -109,17 +107,40 @@ function getDetails() {
 }
 
 async function donate() {
-	const imgs = await getImages();
-	if (imgs == null || imgs.length == 0) {
+	const img = await getImage();
+	if (img == null || img.length == 0) {
+		alert("Failed (Something is wrong with the image you submitted).")
 		return;
 	}
 	const details = getDetails();
 	if (details.includes(null)) {
 		console.error("Please fill in the whole form.");
+		alert("Failed to send donation.")
 		sending = false;
 		return;
 	}
-	sendDonation(imgs, details[0], details[1], details[2], details[3]);
+	sendDonation(img, details[0], details[1], details[2], details[3]);
+}
+
+function addOptions() {
+	const categoryList = document.body.querySelector("#info .category fieldset");
+	for (const key of Object.keys(FILTERINGOPTIONS)) {
+		categoryList.innerHTML += `
+			<div class="donation-type">
+				<input type="radio" class="donation-type item" name="type" value="${key}" checked/>
+				<label for="${key}">${FILTERINGOPTIONS[key]}</label>
+			</div>
+		`;
+	}
+	const locationsList = document.body.querySelector("#info .location fieldset");
+	for (const key of Object.keys(DONATIONLOCATIONS)) {
+		locationsList.innerHTML += `
+			<div class="donation-location">
+				<input type="radio" class="donation-location item" name="location" value="${key}" checked/>
+				<label for="${key}">${DONATIONLOCATIONS[key]}</label>
+			</div>
+		`;
+	}
 }
 
 function addButtonListeners() {
@@ -136,4 +157,5 @@ function addButtonListeners() {
 
 window.addEventListener("load", () => {
 	addButtonListeners();
+	addOptions();
 });
