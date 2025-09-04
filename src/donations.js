@@ -85,6 +85,7 @@ function addToFiltered(filteredList, option) {
 	if (filteredList.querySelector(`[value="${option.value}"]`)) { return; }
 	const optionBtn = document.createElement("button");
 	optionBtn.setAttribute("class", "item");
+	optionBtn.setAttribute("title", "Click on the relevant button to remove a filtering option from those selected.");
 	optionBtn.setAttribute("value", option.value);
 	optionBtn.textContent = FILTERINGOPTIONS[option.value];
 	optionBtn.addEventListener("click", (ev) => {
