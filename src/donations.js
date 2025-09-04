@@ -53,7 +53,6 @@ function createDonationDiv(donation) {
 	locationSpan.textContent = "Location: " + slocation;
 	infoDiv.appendChild(locationSpan);
 	div.appendChild(infoDiv);
-
 	return div;
 }
 
