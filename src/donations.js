@@ -22,7 +22,8 @@ function fetchDonations(type) {
 		}),
 		headers: {
 			"Content-Type": "application/json; charset=UTF-8"
-		}
+		},
+		credentials: "include"
 	}).then(async (response) => {
 		if (response.status != 200) {
 			return null;
@@ -38,7 +39,8 @@ function fetchImage(donationId) {
 		body: JSON.stringify({
 			"type": "fetch-image",
 			"donationId": donationId
-		})
+		}),
+		credentials: "include"
 	}).then(async (response) => {
 		if (response.status != 200) {
 			return null;
@@ -54,7 +56,8 @@ function claimDonation(donationId) {
 		body: JSON.stringify({
 			"type": "claim-donation",
 			"donationId": donationId
-		})
+		}),
+		credentials: "include"
 	}).then(async (response) => {
 		if (response.status != 200) {
 			return null;

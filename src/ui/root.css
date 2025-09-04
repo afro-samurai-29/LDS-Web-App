@@ -175,6 +175,10 @@
 	align-content: center;
 }
 
+#donation-list > div.donation > div.info p {
+	overflow-wrap: break-word;
+}
+
 #donation-list .loader {
 	border: 8px solid #f3f3f3;
 	border-top: 8px solid #3498db;
