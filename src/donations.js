@@ -1,4 +1,4 @@
-import { PHPSERVER, FILTERINGOPTIONS } from "./constants.js"
+import { PHPSERVER, DONATIONLOCATIONS, FILTERINGOPTIONS } from "./constants.js"
 
 function fetchDonations(filters = []) {
 	return fetch(`${PHPSERVER}/donations.php`, {
@@ -57,19 +57,35 @@ function createDonationDiv(donation) {
 }
 
 async function populateDonations() {
-	const listInterface = document.body.querySelector("section#donation-list");
-	listInterface.replaceChildren();
+	const donationList = document.body.querySelector("section#donation-list");
+	donationList.replaceChildren();
 	const loader = document.createElement("div");
 	loader.setAttribute("class", "loader");
-	listInterface.appendChild(loader);
+	loader.setAttribute("aria-label", "Loading donations");
+	donationList.appendChild(loader);
 	const filters = [...document.body.querySelectorAll(`.white-strip.filtering .filtered-items .item`)].map((e) => {
 		return e.value;
 	});
 	const donations = await fetchDonations(filters);
-	listInterface.removeChild(loader);
-	for (const key of Object.keys(donations)) {
-		const donationDiv = createDonationDiv(donations[key]);
-		listInterface.appendChild(donationDiv);
+	donationList.removeChild(loader);
+	if (Object.keys(donations).length == 0) {
+		donationList.innerHTML = `<div class="no-results">No donations match your filters.</div>`;
+	}
+	for (const donation of Object.values(donations)) {
+		const imgSource = JSON.parse(donation[0])[0], contactNo = donation[1], description = donation[2], type = donation[3], slocation = donation[4];
+		const div = document.createElement("div");
+		div.setAttribute("class", "donation");
+		div.innerHTML = `
+			<img src="${imgSource || 'no-image-icon50.png'}" alt="${type}" class="donation-img">
+			<div class="info">
+				<strong>${FILTERINGOPTIONS[type]}</strong>
+				<strong>Donation Location       : ${DONATIONLOCATIONS[slocation]}</strong>
+				<strong>Donation Type           : ${FILTERINGOPTIONS[type]}</strong>
+				<strong>Contact No              : ${contactNo}</strong>
+				<p>${description}</p>
+			</div>
+		`;
+		donationList.appendChild(div);
 	}
 }
 
