@@ -24,10 +24,14 @@ function sendDonation(images, contactNo, description, type, slocation) {
 		}),
 		headers: {
 			"Content-Type": "application/json; charset=UTF-8"
-		}
+		},
+		credentials: "include"
 	}).then(async (response) => {
+		if (response.status != 200) {
+			console.error(`Failed to add donation.`);
+			return null;
+		}
 		response = await response.text();
-		sending = false;
 		return response;
 	});
 }

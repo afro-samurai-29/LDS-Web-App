@@ -34,13 +34,15 @@ class MySQLClass {
 		}
 	}
 
-	static public function createTypeString($filters) {
+	static public function createTypeString(&$filters) {
 		$types = "";
 		foreach ($filters as $value) {
 			if (is_int($value)) {
 				$types .= "i"; // integer
 			} elseif (is_float($value)) {
 				$types .= "d"; // double/float
+			} elseif (is_string($value) && !ctype_print($value)) {
+				$types .= "s"; // binary string (contains non-printable characters)
 			} elseif (is_string($value)) {
 				$types .= "s"; // string
 			} else {

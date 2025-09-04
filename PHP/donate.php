@@ -78,7 +78,12 @@ class DonateClass {
 	public function addDonation($data) {
 		$data["description"] = str_replace("  ", " ", trim($data["description"]));
 		$this->validateData($data);
-		$uuid = $this->generateUuid();
+		$uuid;
+		if (isset($_COOKIE["session-id"])) {
+			$uuid = hex2bin(trim($_COOKIE["session-id"]));
+		} else {
+	    		$uuid = $this->generateUuid();
+		}
 		$img = $data["images"];
 		$img = json_encode($img);
 		$params = [
@@ -89,10 +94,17 @@ class DonateClass {
 			"4" => $data["type"],
 			"5" => $data["location"]
 		];
-		$stmt = $this->mysqli->prepare("INSERT INTO donations VALUES(?, ?, ?, ?, ?, ?)");
+		$stmt = $this->mysqli->prepare("INSERT INTO donations (uuid, donationImages, contactNumber, donationDescription, donationType, donationLocation) VALUES(?, ?, ?, ?, ?, ?)");
 		MySQLClass::dynamicBindParams($stmt, $params);
 		if ($stmt->execute()) {
-			exit(json_encode($params));
+			setcookie("session-id", bin2hex($params["0"]), [
+				'expires'  => time() + 86400,	// 1 day
+				'path'     => '/',
+				'secure'   => true,	// only over HTTPS
+				'httponly' => true,
+				'samesite' => 'Strict'
+			]);
+			exit();
 		} else {
 			header("HTTP/1.1 534 Failed to register donation", true);
 			header("Status: 534 Failed to register donation", true);
