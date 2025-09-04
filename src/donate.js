@@ -106,7 +106,7 @@ function getDetails() {
 
 async function donate() {
 	const imgs = await getImages();
-	if (imgs == null) {
+	if (imgs == null || imgs.length == 0) {
 		return;
 	}
 	const details = getDetails();
