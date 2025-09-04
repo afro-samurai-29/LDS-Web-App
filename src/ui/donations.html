@@ -23,8 +23,16 @@
 			<p>Join us in making campus life better for everyone through kindness and generosity</p>
 			<button class="cta-button" onclick="window.open(window.location.href.replace(/donations.html/g, 'donate.html'), '_top')" type="button">Make a Difference</button>
 		</section>
-		<section class="white-strip"></section>
-		<section id="donation-list"></section>
+		<section class="white-strip filtering">
+			<label for="filtering">Please choose what options to filter for:</label>
+			<select autofocus name="filtering" class="filtering-items">
+				<option value="">--Please select an option to add it--</option>
+			</select>
+			<div class="filtered-items"></div>
+		</section>
+		<section id="donation-list">
+			<div class="loader"></div>
+		</section>
 		<section class="white-strip"></section>
 		<footer>
 			<div class="social-links">

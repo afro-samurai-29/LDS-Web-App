@@ -1,8 +1,10 @@
 /* Home Page Specific Styles */
+/* ======================= */
+/* Slide Show Styles */
+/* ======================= */
 
-/* SlideShowStyles */
 .slideshow-container {
-	display: block;       /* required to make margin work */
+	display: block;			 /* required to make margin work */
 	margin: 0 auto; 
 	max-width: 60%;
 	overflow: hidden;
@@ -30,9 +32,12 @@
 	from { opacity: 0.4; }
 	to { opacity: 1; }
 }
-/* SlideShowStyles */
+/* ======================= */
 
-/* NavBarStyles */
+/* ======================= */
+/* Nav Bar Styles */
+/* ======================= */
+
 .navbar {
 	background-color: #ffffff;
 	padding: 1rem 2rem;
@@ -72,17 +77,20 @@
 .nav-links a:hover {
 	color: #0077cc;
 }
-/* NavBarStyles */
+/* ======================= */
 
-/* DonationStyles */
-div#wrapper {
+/* ======================= */
+/* Donations Page Styles */
+/* ======================= */
+
+#wrapper {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
 	width: 100%;
 }
 
-div#wrapper .donation-buttons a {
+#wrapper .donation-buttons a {
 	text-decoration: none;
 	color: white;
 	transition: color 0.3s;
@@ -92,20 +100,65 @@ div#wrapper .donation-buttons a {
 	background-color: white;
 	min-height: 1rem;
 	width: 100%;
+	align-content: start;
+	display: flex;
+	flex-direction: column;
 }
 
-section#donation-list {
+.white-strip.filtering {
+	min-height: 7.5rem;
+	font-size: 1.2rem;
+}
+
+.white-strip.filtering label {
+	margin-bottom: 0.3rem;
+}
+.white-strip.filtering .filtering-items {
+	min-height: 1.2rem;
+	margin-bottom: 0.3rem;
+	font-size: 1.1rem;
+}
+
+.white-strip.filtering .filtered-items {
+	align-content: start;
+	overflow-x: scroll;
+	display: flex;
+	flex-direction: row;
+}
+
+.white-strip .filtered-items .item {
+	font-size: 1.1rem;
+	text-align: center;
+	padding: 0.8rem 2rem;
+	border: none;
+	border-radius: 30px;
+	background: linear-gradient(135deg, #ff6b6b, #ff9a9e);
+	color: white;
+	font-size: 1rem;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-bottom: 0.3rem;
+	margin-top: 0.3rem;
+	margin-right: 0.3rem;
+}
+
+.white-strip .filtered-items .item:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+#donation-list {
 	padding: 3rem 2rem;
 	background-color: #4ecdc4;
 	color: white;
 	width: 100%;
-	flex: 1;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-section#donation-list > div.donation {
+#donation-list > div.donation {
 	border-bottom: 0.2rem solid white;
 	padding: 0.7rem 0.4rem 0.7rem 0.4rem;
 	display: flex;
@@ -114,7 +167,7 @@ section#donation-list > div.donation {
 	font-size: 1rem;
 }
 
-section#donation-list > div.donation > div.info {
+#donation-list > div.donation > div.info {
 	border-top: 0.2rem solid white;
 	border-left: 0.2rem solid white;
 	padding: 0.4rem 0rem 0rem 0.4rem;
@@ -123,6 +176,21 @@ section#donation-list > div.donation > div.info {
 	flex-direction: column;
 	color: #333;
 	align-content: center;
+}
+
+#donation-list .loader {
+	border: 8px solid #f3f3f3;
+	border-top: 8px solid #3498db;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	animation: spin 1s linear infinite;
+	margin: 50px auto;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
 
 .donation-img {
@@ -145,8 +213,11 @@ section#donation-list > div.donation > div.info {
 	z-index: 10;
 	width: 100%;
 }
-/* DonationStyles */
+/* ======================= */
 
+/* ======================= */
+/* Main Page UI */
+/* ======================= */
 .hero {
 	text-align: center;
 	padding: 6rem 2rem;
@@ -333,9 +404,11 @@ footer {
 .social-links a:hover {
 	color: #4ecdc4;
 }
+/* ======================= */
 
-
-
+/* ======================= */
+/* Main HTML Body Styles */
+/* ======================= */
 /* Reset and base styles */
 html {
 	font-size: 100%;
@@ -355,73 +428,31 @@ body{
 
 /* Full-page background using a pseudo-element */
 body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  
-  /* Background image + gradient overlay */
-  background: 
-    linear-gradient(rgba(255, 183, 77, 0.85), rgba(255, 111, 97, 0.85)),
-    url("first.jpg");
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	
+	/* Background image + gradient overlay */
+	background: 
+		linear-gradient(rgba(255, 183, 77, 0.85), rgba(255, 111, 97, 0.85)),
+		url("first.jpg");
 
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 
-  z-index: -1;
-  opacity: 1;
+	z-index: -1;
+	opacity: 1;
 }
+/* ======================= */
 
 
-/* DonateStyles */
-div#info {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-bottom: 2rem;
-	font-weight: 600;
-	font-size: 1.1rem;
-}
-
-div#info > div {
-	margin-bottom: 0.5rem;
-	margin-top: 0.5rem;
-}
-
-div#info > div.img-select {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-div#info .img-select input[type="file"] {
-	display: none;
-}
-
-div#info .img-select p {
-	margin-bottom: 0.6rem;
-	margin-top: 0.6rem;
-	color: #333;
-}
-
-div.buttons {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-evenly;
-}
-
-div.buttons > button {
-	margin-bottom: 0.3rem;
-	margin-top: 0.3rem;
-}
-/* DonateStyles */
-
-/* Responsive Design */
-/* Typical Tables */
+/* ======================= */
+/* Tablet Specific Styling */
+/* ======================= */
 @media (max-width: 768px) {
 	.hero h1 {
 		font-size: 2.5rem;
@@ -443,7 +474,11 @@ div.buttons > button {
 		font-size: 2rem;
 	}
 }
-/* Typical Smartphones */
+/* ======================= */
+
+/* ======================= */
+/* Smartphone Specific Styling */
+/* ======================= */
 @media (max-width: 400px) {
 	.hero h1 {
 		font-size: 2.5rem;
@@ -473,89 +508,133 @@ div.buttons > button {
 		width: 100%;
 	}
 }
-/* Responsive Design */
-
-/* ======================= */
-/* Donate Page Enhancements */
 /* ======================= */
 
+/* ======================= */
+/* Donate Page Stles */
+/* ======================= */
 /* Form Container */
 #info {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  max-width: 700px;
-  margin: 2rem auto;
-  animation: fadeIn 0.8s ease-in-out;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 2rem;
+	font-weight: 600;
+	font-size: 1.1rem;
+	background: rgba(255, 255, 255, 0.9);
+	padding: 2rem;
+	border-radius: 15px;
+	box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+	max-width: 700px;
+	margin: 2rem auto;
+	animation: fadeIn 0.8s ease-in-out;
+}
+
+div#info > div {
+	margin-bottom: 0.5rem;
+	margin-top: 0.5rem;
 }
 
 /* Input fields */
 #info input[type="tel"],
 #info textarea {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-top: 0.5rem;
-  font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
+	width: 100%;
+	padding: 0.8rem 1rem;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+	margin-top: 0.5rem;
+	font-size: 1rem;
+	transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 #info input[type="tel"]:focus,
 #info textarea:focus {
-  outline: none;
-  border-color: #4ecdc4;
-  box-shadow: 0 0 6px rgba(78,205,196,0.5);
+	outline: none;
+	border-color: #4ecdc4;
+	box-shadow: 0 0 6px rgba(78,205,196,0.5);
+}
+
+#info .img-select input[type="file"] {
+	display: none;
+}
+
+#info div:not([class]) {
+	text-align: center;
+	align-content: center;
+}
+
+/* Img Select Button */
+#info > .img-select {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* Img Select Text */
+#info .img-select p {
+	margin-bottom: 0.6rem;
+	margin-top: 0.6rem;
+	color: #333;
+	text-align: center;
 }
 
 /* Radio buttons grouped neatly */
 fieldset {
-  border: 2px solid #4ecdc4;
-  border-radius: 10px;
-  padding: 1rem;
-  margin-top: 1rem;
-  background: #f8f9fa;
+	border: 2px solid #4ecdc4;
+	border-radius: 10px;
+	padding: 1rem;
+	margin-top: 1rem;
+	background: #f8f9fa;
 }
 
 legend {
-  font-weight: bold;
-  color: #333;
-  padding: 0 0.5rem;
+	font-weight: bold;
+	color: #333;
+	padding: 0 0.5rem;
 }
 
 /* Buttons */
+.buttons {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
 .buttons button {
-  padding: 0.8rem 2rem;
-  border: none;
-  border-radius: 30px;
-  background: linear-gradient(135deg, #ff6b6b, #ff9a9e);
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
+	padding: 0.8rem 2rem;
+	border: none;
+	border-radius: 30px;
+	background: linear-gradient(135deg, #ff6b6b, #ff9a9e);
+	color: white;
+	font-size: 1rem;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-bottom: 0.3rem;
+	margin-top: 0.3rem;
 }
 
 .buttons button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+	transform: translateY(-3px);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.2);
 }
 
 /* Link inside button */
 #switch a {
-  text-decoration: none;
-  color: white;
+	text-decoration: none;
+	color: white;
 }
 
 /* File upload display */
 #fileName {
-  font-style: italic;
-  color: #555;
+	font-style: italic;
+	color: #555;
 }
 
 /* Fade-in Animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+	from { opacity: 0; transform: translateY(20px); }
+	to { opacity: 1; transform: translateY(0); }
 }
+/* ======================= */
