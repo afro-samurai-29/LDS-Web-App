@@ -16,6 +16,10 @@ class DonateClass {
 		$this->mysqli = $mysqli;
 	}
 
+	private function generateUuid($length = 16) {
+		return random_bytes($length);
+	}
+
 	# Source (Modified to account for gibberish that has little to no spaces): "https://codereview.stackexchange.com/questions/868/calculating-entropy-of-a-string/926#926"
 	private function entropyCheck($string) {
 		$characterDictionary = [];
@@ -74,22 +78,21 @@ class DonateClass {
 	public function addDonation($data) {
 		$data["description"] = str_replace("  ", " ", trim($data["description"]));
 		$this->validateData($data);
+		$uuid = $this->generateUuid();
 		$img = $data["images"];
-		if (count($img) == 0) {
-			$img = null;
-		}
 		$img = json_encode($img);
 		$params = [
-			"0" => $img,
-			"1" => $data["contactNo"],
-			"2" => $data["description"],
-			"3" => $data["type"],
-			"4" => $data["location"]
+			"0" => $uuid,
+			"1" => $img,
+			"2" => $data["contactNo"],
+			"3" => $data["description"],
+			"4" => $data["type"],
+			"5" => $data["location"]
 		];
-		$stmt = $this->mysqli->prepare("INSERT INTO donations VALUES(?, ?, ?, ?, ?)");
+		$stmt = $this->mysqli->prepare("INSERT INTO donations VALUES(?, ?, ?, ?, ?, ?)");
 		MySQLClass::dynamicBindParams($stmt, $params);
 		if ($stmt->execute()) {
-			exit("Success");
+			exit(json_encode($params));
 		} else {
 			header("HTTP/1.1 534 Failed to register donation", true);
 			header("Status: 534 Failed to register donation", true);
