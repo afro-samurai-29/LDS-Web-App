@@ -27,7 +27,7 @@ class MySQLClass {
 			$this->uuid = generateUuid();
 			setcookie("session-id", bin2hex($this->uuid), [
 				'expires'  => time() + 86400 * 30,	// 30 day
-				'path'     => '/',
+				'path'	 => '/',
 				'secure'   => true,	// only over HTTPS
 				'httponly' => true,
 				'samesite' => 'Strict'
@@ -86,6 +86,30 @@ class MySQLClass {
 	}
 }
 
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+	$origin = $_SERVER['HTTP_ORIGIN'];
+
+	// optionally check against a whitelist
+	$allowed = [
+		"http://localhost:3000",
+		"http://localhost:8080",
+		"http://127.0.0.1:8080",
+		"file://", // won't work in Chrome, see note below
+	];
+
+	if (in_array($origin, $allowed)) {
+		header("Access-Control-Allow-Origin: $origin");
+		header("Access-Control-Allow-Credentials: true");
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+		header("Access-Control-Allow-Headers: Content-Type, Authorization");
+	}
+}
+
+// handle preflight OPTIONS
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+	http_response_code(200);
+	exit;
+}
 $mysqliClass = new MySQLClass();
 $mysqli = $mysqliClass->mysqli;
 $uuid = $mysqliClass->uuid;

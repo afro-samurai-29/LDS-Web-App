@@ -1,6 +1,7 @@
 import { PHPSERVER } from "./constants.js"
-import { fetchBtns, activeFilters } from "./donations.js"
 let LOCK = Promise.resolve(true);
+let currentFilters = [], 
+let currentType = null;
 
 function delay(time = 1) {
 	return new Promise((resolve) => {
@@ -26,15 +27,12 @@ function fetchDonations(type, filters) {
 }
 
 async function syncDonations() {
-	if (donationId == null) {
-		return LOCK.then(() => {delay()});
+	postMessage({"type": "fetch-filters"});
+	if (currentType == null) { 
+		LOCK = LOCK.then(() => { return delay(); });
+		return LOCK;
 	}
-	const filters = [...activeFilters.querySelectorAll("button")].map((e) => {
-		return e.value;
-	})
-	const type = fetchBtns.filter((e) => {
-		return e.style.colors == "#4ecdc4";
-	})[0];
+	let filters = currentFilters, type = currentType;
 	try {
 		let response = await fetchDonations(type, filters);
 		if (response.status != 200) {
@@ -46,7 +44,15 @@ async function syncDonations() {
 	} catch (e) {
 		postMessage({ status: "500", error: e.message });
 	}
-	return LOCK.then(() => {delay()});
+	LOCK = LOCK.then(() => { return delay(); });
+	return LOCK;
 }
 
+postMessage({"hi": test});
+onmessage = (e) => {
+	if (e.data.type == "filters") { 
+		currentFilters = e.data.filters;
+		currentType = e.data["filter-type"] || null;
+	}
+}
 syncDonations();

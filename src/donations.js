@@ -2,8 +2,8 @@ import { PHPSERVER, DONATIONLOCATIONS, FILTERINGOPTIONS } from "./constants.js";
 
 let donationList = document.body.querySelector("section#donation-list");
 let categoryFilter = document.body.querySelector("section.white-strip.filtering .filter-controls select#category-filter");
-export const activeFilters = document.body.querySelector("section.white-strip.filtering .active-filters");
-export const fetchBtns = [
+const activeFilters = document.body.querySelector("section.white-strip.filtering .active-filters");
+const fetchBtns = [
 	document.body.querySelector("#fetch-donations"),
 	document.body.querySelector("#fetch-made-donations"),
 	document.body.querySelector("#fetch-claimed-donations")
@@ -14,15 +14,29 @@ let refreshWorker;
 refreshWorker = new Worker("../donationsWorker.js", { type: "module" });
 refreshWorker.onmessage = (e) => {
 	console.debug(e.data);
-	if (e.data.status != 200) {
-		switch (e.data.status) {
-			case 560:
-				refreshWorker.terminate();
-				break;
-		}
-		return;
+	switch (e.data.status) {
+		case 560:
+			refreshWorker.terminate();
+			return;
+			break;
+	}
+	switch (e.data.type) {
+		case "fetch-filters":
+			refreshWorker.postMessage({
+				"type": "filters",
+				filters: [...activeFilters.querySelectorAll("button")].map(e => e.value),
+				"fetch-type": fetchBtns.find(e => e.style.color === "#4ecdc4")?.id
+			});
+			break;
 	}
 };
+refreshWorker.onerror = (e) => {
+	console.error("Worker error: ", e.message, e);
+}
+refreshWorker.onmessageerror = (e) => {
+	console.error("Worker error: ", e.message, e);
+}
+
 
 function fetchDonations(type) {
 	const filters = [...activeFilters.querySelectorAll("button")].map((e) => {
