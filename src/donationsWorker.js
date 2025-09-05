@@ -1,16 +1,6 @@
 import { PHPSERVER } from "./constants.js"
-let LOCK = Promise.resolve(true);
 let currentFilters = [], 
 let currentType = null;
-
-function delay(time = 1) {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			syncDonations();
-			resolve(true);
-		}, time * 1000);
-	});
-}
 
 function fetchDonations(type, filters) {
 	return fetch(`${PHPSERVER}/donations.php`, {
@@ -29,12 +19,12 @@ function fetchDonations(type, filters) {
 async function syncDonations() {
 	postMessage({"type": "fetch-filters"});
 	if (currentType == null) { 
-		LOCK = LOCK.then(() => { return delay(); });
-		return LOCK;
+		setTimeout(() => {
+			resolve(syncDonations());
+		}, 1 * 1000);
 	}
-	let filters = currentFilters, type = currentType;
 	try {
-		let response = await fetchDonations(type, filters);
+		let response = await fetchDonations(currentType, currentFilters);
 		if (response.status != 200) {
 			postMessage({status: response.status});
 		} else {
@@ -44,15 +34,15 @@ async function syncDonations() {
 	} catch (e) {
 		postMessage({ status: "500", error: e.message });
 	}
-	LOCK = LOCK.then(() => { return delay(); });
-	return LOCK;
+	setTimeout(() => {
+		syncDonations();
+	}, 1 * 1000);
 }
 
-postMessage({"hi": test});
 onmessage = (e) => {
 	if (e.data.type == "filters") { 
 		currentFilters = e.data.filters;
-		currentType = e.data["filter-type"] || null;
+		currentType = e.data["filter-type"];
 	}
 }
 syncDonations();
