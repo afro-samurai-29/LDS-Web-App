@@ -1,10 +1,12 @@
 import { PHPSERVER } from "./constants.js"
 
-let sendBtn;
+let sendBtn, micBtn;
+let mediaRecorder;
 const messages = [];
 const chatMessages = document.getElementById("chatMessages");
 const donationId = URL.parse(location.href).searchParams.get("id");
 let refreshWorker;
+let lastTimeStamp = 0;
 if (donationId) {
 	refreshWorker = new Worker("../worker.js", { type: "module" });
 	refreshWorker.postMessage({ donationId });
@@ -51,24 +53,31 @@ function updateDisplayedMessages(chats) {
 }
 
 function refreshMessages(chatsObject) {
-	let displayedMessages = getDisplayedMessages();
 	let chats = chatsObject["data"];
 	console.debug(chats);
-	for (let i = 0, j = 0; i < chats.length && j <= displayedMessages.length; i++) {
-		if (displayedMessages.length == 0) {
-			let classDef = "received";
-			if (chats[i]["sender"] == "You") {
-				classDef = "sent";
-			}
-			const message = `
-				<div class="message ${classDef}">${chats[i]["message"]}</div>
-			`;
-			chatMessages.innerHTML += message;
-			chatMessages.scrollTop = chatMessages.scrollHeight;
-		} else if (JSON.stringify(chats[i]) != JSON.stringify(displayedMessages[j])) {
-			updateDisplayedMessages(chats);
-			break;
+	for (let i = 0, j = 0; i < chats.length; i++) {	
+		if (chats[i]["timestamp"] <= lastTimeStamp) {
+			continue;
 		}
+		lastTimeStamp = chats[i]["timestamp"]
+		let classDef = "received";
+		if (chats[i]["sender"] == "You") {
+			classDef = "sent";
+		}
+		let message = "";
+		if (/^data:audio/g.test(chats[i]["message"])) {
+			message = `
+				<div class="${classDef} chat-message voice-note">
+					<audio controls src="${chats[i]["message"]}"></audio>
+				</div>
+			`;
+		} else {
+			message = `
+				<div class="${classDef} chat-message">${chats[i]["message"]}</div>
+			`;
+		}
+		chatMessages.innerHTML += message;
+		chatMessages.scrollTop = chatMessages.scrollHeight;
 	}
 }
 
@@ -91,19 +100,51 @@ async function sendMessage() {
 	const input = document.getElementById("messageInput");
 	const messageText = input.value.trim();
 	if (messageText === "") return;
-
-	const messageContainer = document.createElement("div");
-	messageContainer.setAttribute("class", "message sent");
-	messageContainer.textContent = messageText;
-
-	const chatMessages = document.getElementById("chatMessages");
-	chatMessages.appendChild(messageContainer);
-
 	chatMessages.scrollTop = chatMessages.scrollHeight; // Auto scroll
-
-	input.value = "";
 	await sendMessageToServer(messageText);
+	input.value = "";
 	sendBtn.disabled = false;
+}
+
+// Blob -> data URI (includes mime type; can go straight to <audio src>)
+function blobToDataURI(blob) {
+	const reader = new FileReader();
+	return new Promise((resolve, reject) => {
+		reader.onerror = reject;
+		reader.onload = () => resolve(reader.result); // "data:audio/...,base64,...."
+		reader.readAsDataURL(blob);
+	});
+}
+
+async function sendVoiceNote() {
+	// Voice note feature
+
+	if (!mediaRecorder || mediaRecorder.state === "inactive") {
+		// Start recording
+		const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+		mediaRecorder = new MediaRecorder(stream);
+		let audioChunks = [];
+
+		mediaRecorder.ondataavailable = (event) => {
+			if (event.data.size > 0) {
+				audioChunks.push(event.data);
+			}
+		};
+
+		mediaRecorder.onstop = async () => {
+			const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+			const dataURI = await blobToDataURI(audioBlob);
+			chatMessages.scrollTop = chatMessages.scrollHeight;
+			await sendMessageToServer(dataURI);
+		};
+
+		mediaRecorder.start();
+		micBtn.innerHTML = '<i class="fa-solid fa-stop"></i>';
+	} else {
+		// Stop recording
+		mediaRecorder.stop();
+		micBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>';
+	}
 }
 
 window.addEventListener("load", () => {
@@ -118,4 +159,12 @@ window.addEventListener("load", () => {
 			sendBtn.click();
 		}
 	});
+	micBtn = document.getElementById("micBtn");
+	if (micBtn) {
+		micBtn.onclick = () => {
+			sendVoiceNote();
+		}
+	}
 });
+
+

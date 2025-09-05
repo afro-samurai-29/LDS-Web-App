@@ -32,6 +32,12 @@ body {
 	text-align: center;
 }
 
+/* Voice Messages */
+.chat-message.voice-note {
+	background: #d1f7c4;
+	align-self: flex-start;
+}
+
 /* Messages area */
 .chat-messages {
 	flex: 1;
@@ -41,22 +47,12 @@ body {
 	flex-direction: column;
 }
 
-.message {
-	margin: 8px 0;
-	padding: 10px;
-	border-radius: 8px;
-	max-width: 70%;
-	word-wrap: break-word;
-}
-
-.sent {
-	background: #DCF8C6;
-	align-self: flex-end;
-}
-
-.received {
-	background: #f1f0f0;
-	align-self: flex-start;
+.chat-message {
+  margin-bottom: 12px;
+  padding: 10px 15px;
+  border-radius: 15px;
+  max-width: 70%;
+  word-wrap: break-word;
 }
 
 /* Input area */
@@ -88,4 +84,14 @@ body {
 
 .chat-input button:hover {
 	background: #357ab7;
+}
+
+.sent {
+	background: #DCF8C6;
+	align-self: flex-end;
+}
+
+.received {
+	background: #f1f0f0;
+	align-self: flex-start;
 }

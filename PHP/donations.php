@@ -108,6 +108,20 @@ class DonationsClass {
 		}
 		return $result;
 	}
+
+	public function deleteDonation($donationId) {
+		$hexUuid = bin2hex($this->uuid);
+		$stmt = $this->mysqli->prepare("DELETE FROM donations WHERE donorUuid = UNHEX(?) AND donationId = ?");
+		$stmt->bind_param("si", $hexUuid, $donationId);
+		$result = $stmt->execute();
+
+		if ($result == false) {
+			header("HTTP/1.1 522 Claim failed", true);
+			header("Status: 522 Claim failed", true);
+			die();
+		}
+		return $result;
+	}	
 }
 
 $data = json_decode(file_get_contents("php://input"), true);
@@ -142,6 +156,15 @@ if (in_array($data["type"], $fetchTypes)) {
 } else if ($data["type"] == "claim-donation") {
 	if (array_key_exists("donationId", $data)) {
 		$result = $donationsClass->claimDonation($data["donationId"]);
+	} else {
+		header("HTTP/1.1 521 Query failed", true);
+		header("Status: 521 Query failed", true);
+		die();
+	}
+	exit($result);
+} else if ($data["type"] == "claimed-donation") {
+	if (array_key_exists("donationId", $data)) {
+		$result = $donationsClass->deleteDonation($data["donationId"]);
 	} else {
 		header("HTTP/1.1 521 Query failed", true);
 		header("Status: 521 Query failed", true);

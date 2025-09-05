@@ -40,7 +40,8 @@ class ChatClass {
 		$sender = bin2hex($this->uuid);
 		$chats[] = [
 			"sender" => $sender,
-			"message" => $data["message"]
+			"message" => $data["message"],
+			"timestamp" => microtime(true)
 		];
 		$chats = json_encode($chats);
 		$stmt = $this->mysqli->prepare("UPDATE chats as c JOIN donations as d ON c.donationId = d.donationId SET c.chats = ? WHERE c.donationId = ? AND d.claimStatus = 1 AND ( d.donorUuid = UNHEX(?) OR d.recipientUuid = UNHEX(?) )");

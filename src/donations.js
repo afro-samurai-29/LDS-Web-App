@@ -114,6 +114,24 @@ function claimDonation(donationId) {
 	});
 }
 
+function claimedDonation(donationId) {
+	return fetch(`${PHPSERVER}/donations.php`, {
+		method: "POST",
+		body: JSON.stringify({
+			"type": "claimed-donation",
+			"donationId": donationId
+		}),
+		credentials: "include"
+	}).then(async (response) => {
+		if (response.status != 200) {
+			return null;
+		}
+		alert("Claimed donation.")
+		LOCK.then(() => { return populateDonations(); });
+		return response;
+	});
+}
+
 function removeDonations() {
 	donationList.replaceChildren();
 }
@@ -163,19 +181,40 @@ async function createDonationDiv(donation, type = "fetch-donations") {
 	} else {
 		const donationStatus = await fetchStatus(donationId);
 		div.innerHTML += `
-			<button id="donation-chat" onclick="window.open(window.location.href.replace(/donations.html/g, 'chats.html?id=${donationId}'), '_top')">Chat</button>
+			<button id="donation-chat">Chat</button>
+			<button id="claimed-donation">Claimed</button>
 		`;
+		const btn = div.querySelector("button#donation-chat");
+		const claimedBtn = div.querySelector("button#claimed-donation");
+		claimedBtn.title = "If the donation has been claimed, please click on this button.";
 		if (donationStatus[0] == 0) {
-			div.querySelector("button#donation-chat").disabled = true;
+			btn.disabled = true;
+			btn.title = "Not a claimed donation, so a chat session unavailable for the donation.";
 		}
+		btn.addEventListener("click", async (e) => {
+			const statusVar = await fetchStatus(donationId);
+			if (statusVar[0] == 0) {
+				e.target.disabled = true;
+				e.target.title = "Not a claimed donation, so a chat session unavailable for the donation.";
+			} else {
+				window.open(window.location.href.replace(/donations.html/g, 'chats.html?id=${donationId}'), '_top');
+			}
+		});
+		claimedBtn.addEventListener("click", (e) => {
+			claimedDonation(donationId);
+		});
 	}
 	return div;
 }
 
-async function populateDonations(type = "fetch-donations") {
+async function populateDonations() {
 	removeDonations();
 	addLoader();
-	return fetchDonations(type).then(async (donations) => {
+	const typeBtn = fetchBtns.filter((e) => {
+		return e.chosen == true
+	});
+	if (typeBtn.length == 0) {return;}
+	return fetchDonations(typeBtn[0].id).then(async (donations) => {
 		removeDonations();
 		if (donations == null || Object.keys(donations).length == 0) {
 			donationList.innerHTML = `<div class="no-results">No donations match your filters.</div>`;
@@ -184,7 +223,7 @@ async function populateDonations(type = "fetch-donations") {
 		}
 		addLoader();
 		for (const donation of Object.values(donations)) {
-			const div = await createDonationDiv(donation, type);
+			const div = await createDonationDiv(donation, typeBtn[0].id);
 			donationList.appendChild(div);
 		}
 		removeLoader();
@@ -237,13 +276,16 @@ async function addFilteringOptions() {
 function highlightButton(highlightBtn) {
 	for (const btn of fetchBtns) {
 		btn.style.color = "#333";
+		btn.chosen = false;
 	}
 	highlightBtn.style.color = "#4ecdc4";
+	highlightBtn.chosen = true;
 }
 
 function addButtonListeners() {
 	const clearFiltersBtn = document.getElementById("clear-filters");
 	fetchBtns[0].style.color = "#4ecdc4"
+	fetchBtns[0].chosen = true;
 	for (const btn of fetchBtns) {
 		if (!btn) {
 			console.error(`Could not find a button.`);
@@ -251,7 +293,7 @@ function addButtonListeners() {
 		} else {
 			btn.addEventListener("click", (ev) => {
 				highlightButton(btn);
-				LOCK.then(() => { return populateDonations(ev.target.id); });
+				LOCK.then(() => { return populateDonations(); });
 			});
 		}
 	}

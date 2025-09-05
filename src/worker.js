@@ -4,7 +4,7 @@ let donationId;
 
 async function syncChat() {
 	if (donationId == null) {
-		setTimeout(syncChat, 1000); // repeat every 5s
+		setTimeout(syncChat, 500); // repeat every 5s
 		return;
 	}
 	try {
@@ -18,7 +18,7 @@ async function syncChat() {
 	} catch (e) {
 		postMessage({ status: "500", error: e.message });
 	}
-	setTimeout(syncChat, 1000); // repeat every 5s
+	setTimeout(syncChat, 500); // repeat every 5s
 }
 
 function fetchChat() {
