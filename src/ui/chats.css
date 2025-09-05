@@ -11,15 +11,23 @@ body {
 	height: 100vh;
 }
 
+body > nav {
+	position: fixed;
+}
+
 .chat-container {
-	width: 400px;
-	height: 600px;
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	margin-top: 60px; 
+	height: calc(100vh - 60px);
 	display: flex;
 	flex-direction: column;
-	background: #fff;
+	border: 1px solid #ccc;
 	border-radius: 10px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
+	background: #f9f9f9;
+	font-family: Arial, sans-serif;
 }
 
 /* Navbar */
