@@ -6,6 +6,7 @@
 	<title>Campus Kind - Donate</title>
 	<link href="../../icons/icon.png" rel="icon"/>
 	<link href="./root.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <head>
 <body>
 	<nav class="navbar">
@@ -26,7 +27,7 @@
 			<!-- Display selected file name -->
 			<p id="fileName">No file chosen</p>
 		</div>
-		<div>
+		<div style="display:none">
 			<label for="contact-no">Contact Number:</label>
 			<br>
 			<input type="tel" name="contact-no" id="contact-no" pattern="[0-9]{3}[ \-]{0,1}[0-9]{3}[ \-]{0,1}[0-9]{4}" required>
@@ -50,6 +51,15 @@
 	<div class="buttons">
 		<button id="donate">Donate</button>
 	</div>
+	<footer>
+		<div class="social-links">
+			<a href="#"><i class="fab fa-facebook"></i></a>
+			<a href="#"><i class="fab fa-twitter"></i></a>
+			<a href="#"><i class="fab fa-instagram"></i></a>
+			<a href="#"><i class="fab fa-linkedin"></i></a>
+		</div>
+		<p>&copy; 2025 Campus Kind. All rights reserved.</p>
+	</footer>
 	<script src="../donate.js" type="module"></script>
 	<script>
 		const input = document.getElementById('donation-img');

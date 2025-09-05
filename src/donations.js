@@ -182,27 +182,33 @@ async function createDonationDiv(donation, type = "fetch-donations") {
 		const donationStatus = await fetchStatus(donationId);
 		div.innerHTML += `
 			<button id="donation-chat">Chat</button>
-			<button id="claimed-donation">Claimed</button>
 		`;
+		if (type == "fetch-made-donations") {
+			div.innerHTML += `	
+				<button id="claimed-donation">Claimed</button>
+			`;
+		}
 		const btn = div.querySelector("button#donation-chat");
 		const claimedBtn = div.querySelector("button#claimed-donation");
-		claimedBtn.title = "If the donation has been claimed, please click on this button.";
-		if (donationStatus[0] == 0) {
+		if (!donationStatus || donationStatus[0] == 0) {
 			btn.disabled = true;
 			btn.title = "Not a claimed donation, so a chat session unavailable for the donation.";
 		}
 		btn.addEventListener("click", async (e) => {
 			const statusVar = await fetchStatus(donationId);
-			if (statusVar[0] == 0) {
+			if (!statusVar || statusVar[0] == 0) {
 				e.target.disabled = true;
 				e.target.title = "Not a claimed donation, so a chat session unavailable for the donation.";
 			} else {
-				window.open(window.location.href.replace(/donations.html/g, 'chats.html?id=${donationId}'), '_top');
+				window.open(window.location.href.replace(/donations.html/g, `chats.html?id=${donationId}`), '_top');
 			}
 		});
-		claimedBtn.addEventListener("click", (e) => {
-			claimedDonation(donationId);
-		});
+		if (claimedBtn) {
+			claimedBtn.title = "If the donation has been claimed, please click on this button.";
+			claimedBtn.addEventListener("click", (e) => {
+				claimedDonation(donationId);
+			});
+		}
 	}
 	return div;
 }
@@ -217,7 +223,12 @@ async function populateDonations() {
 	return fetchDonations(typeBtn[0].id).then(async (donations) => {
 		removeDonations();
 		if (donations == null || Object.keys(donations).length == 0) {
-			donationList.innerHTML = `<div class="no-results">No donations match your filters.</div>`;
+			donationList.innerHTML = `<div id="no-donations" class="no-results" style="cursor: pointer">No donations match your filters (click to refresh).</div>`;
+			const noDonotionsDiv = donationList.querySelector("#no-donations");
+			noDonotionsDiv.title = "Click to refresh.";
+			noDonotionsDiv.onclick = (e) => {
+				populateDonations();
+			}
 			categoryFilter.disabled = false;
 			return;
 		}
@@ -231,10 +242,10 @@ async function populateDonations() {
 	});
 }
 
-function addFilteringOption(parentElement, optionValue) {
+function addFilteringOption(parentElement, optionValue, value) {
 	var optionSelect = document.createElement("option");
 	optionSelect.setAttribute("value", optionValue);
-	optionSelect.textContent = FILTERINGOPTIONS[optionValue];
+	optionSelect.textContent = value;
 	parentElement.appendChild(optionSelect);
 }
 
@@ -261,7 +272,7 @@ function removeActiveFilters() {
 
 async function addFilteringOptions() {
 	for (const optionValue of Object.keys(FILTERINGOPTIONS)) {
-		addFilteringOption(categoryFilter, optionValue);
+		addFilteringOption(categoryFilter, optionValue, FILTERINGOPTIONS[optionValue]);
 	}
 	categoryFilter.addEventListener("change", (ev) => {
 		const options = [...ev.target.querySelectorAll(`option`)];

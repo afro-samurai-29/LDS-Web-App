@@ -32,12 +32,6 @@ body {
 	text-align: center;
 }
 
-/* Voice Messages */
-.chat-message.voice-note {
-	background: #d1f7c4;
-	align-self: flex-start;
-}
-
 /* Messages area */
 .chat-messages {
 	flex: 1;
@@ -48,11 +42,11 @@ body {
 }
 
 .chat-message {
-  margin-bottom: 12px;
-  padding: 10px 15px;
-  border-radius: 15px;
-  max-width: 70%;
-  word-wrap: break-word;
+	margin-bottom: 12px;
+	padding: 10px 15px;
+	border-radius: 15px;
+	max-width: 70%;
+	word-wrap: break-word;
 }
 
 /* Input area */
@@ -94,4 +88,12 @@ body {
 .received {
 	background: #f1f0f0;
 	align-self: flex-start;
+}
+
+.chat-message audio {
+	width: 100%;				/* Fill the bubble width */
+	display: block;		 /* Remove inline spacing */
+	border-radius: 6px; /* Rounded corners */
+	background: transparent; /* Keep bubble background visible */
+	height: 40px;			 /* Optional: consistent height */
 }

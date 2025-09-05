@@ -13,6 +13,20 @@ class ChatClass {
 		$this->uuid = $uuid;
 	}
 
+	public function getClaimStatus($donationId) {
+		$stmt = $this->mysqli->prepare("SELECT claimStatus FROM donations WHERE donationId = ?");
+		$stmt->bind_param("i", $donationId);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result == false) {
+			header("HTTP/1.1 523 Status Query failed", true);
+			header("Status: 523 Status Query failed", true);
+			die();
+		}
+		return $result->fetch_all()["0"];
+	}
+
 	public function getMessages() {
 		global $data;
 		$hexUuid = bin2hex($this->uuid);

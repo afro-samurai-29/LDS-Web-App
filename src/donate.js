@@ -75,12 +75,7 @@ async function getImage() {
 }
 
 function getDetails() {
-	var contactNo = document.body.querySelector("div#info input#contact-no");
-	if (contactNo && contactNo.checkValidity()) {
-		contactNo = contactNo.value
-	} else {
-		contactNo = null
-	}
+	var contactNo = 1111111111;
 	var description = document.body.querySelector("div#info textarea#description");
 	if (description && description.checkValidity()) {
 		description = description.value

@@ -25,33 +25,6 @@ if (donationId) {
 	};
 }
 
-function getDisplayedMessages() {
-	let displayedMessages = chatMessages.querySelectorAll("div") || [];
-	displayedMessages = [...displayedMessages].map((e) => {
-		if (e.getAttribute("class") == "message sent") {
-			return {sender: "You", message: e.textContent.trim()}
-		} else {
-			return {sender: "Other", message: e.textContent.trim()}
-		}
-	});
-	return displayedMessages;
-}
-
-function updateDisplayedMessages(chats) {
-	chatMessages.innerHTML = "";
-	for (const chat of chats) {
-		let classDef = "received";
-		if (chat["sender"] == "You") {
-			classDef = "sent";
-		}
-		const message = `
-			<div class="message ${classDef}">${chat["message"]}</div>
-		`;
-		chatMessages.innerHTML += message;
-		chatMessages.scrollTop = chatMessages.scrollHeight;
-	}
-}
-
 function refreshMessages(chatsObject) {
 	let chats = chatsObject["data"];
 	console.debug(chats);
@@ -161,10 +134,13 @@ window.addEventListener("load", () => {
 	});
 	micBtn = document.getElementById("micBtn");
 	if (micBtn) {
-		micBtn.onclick = () => {
-			sendVoiceNote();
+		micBtn.onclick = async (e) => {
+			e.target.disabled = true;
+			await sendVoiceNote();
+			e.target.disabled = false;
 		}
 	}
+	document.body.querySelector("div.chat-navbar").textContent = `My Donation's Chat Room - ${donationId}`
 });
 
 
