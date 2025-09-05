@@ -10,6 +10,7 @@ const fetchBtns = [
 ];
 let LOCK = Promise.resolve(true);
 
+/*
 let refreshWorker;
 refreshWorker = new Worker("../donationsWorker.js", { type: "module" });
 refreshWorker.onmessage = (e) => {
@@ -36,7 +37,7 @@ refreshWorker.onerror = (e) => {
 refreshWorker.onmessageerror = (e) => {
 	console.error("Worker error: ", e.message, e);
 }
-
+*/
 
 function fetchDonations(type) {
 	const filters = [...activeFilters.querySelectorAll("button")].map((e) => {
@@ -74,6 +75,23 @@ function fetchImage(donationId) {
 			return null;
 		}
 		response = await response.text();
+		return response;
+	});
+}
+
+function fetchStatus(donationId) {
+	return fetch(`${PHPSERVER}/donations.php`, {
+		method: "POST",
+		body: JSON.stringify({
+			"type": "fetch-status",
+			"donationId": donationId
+		}),
+		credentials: "include"
+	}).then(async (response) => {
+		if (response.status != 200) {
+			return null;
+		}
+		response = await response.json();
 		return response;
 	});
 }
@@ -143,9 +161,13 @@ async function createDonationDiv(donation, type = "fetch-donations") {
 			claimDonation(ev.target.parentElement.id);
 		});
 	} else {
+		const donationStatus = await fetchStatus(donationId);
 		div.innerHTML += `
 			<button id="donation-chat" onclick="window.open(window.location.href.replace(/donations.html/g, 'chats.html?id=${donationId}'), '_top')">Chat</button>
 		`;
+		if (donationStatus[0] == 0) {
+			div.querySelector("button#donation-chat").disabled = true;
+		}
 	}
 	return div;
 }

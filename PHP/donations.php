@@ -82,6 +82,20 @@ class DonationsClass {
 		return $result->fetch_all()["0"]["0"];
 	}
 
+	public function getClaimStatus($donationId) {
+		$stmt = $this->mysqli->prepare("SELECT claimStatus FROM donations WHERE donationId = ?");
+		$stmt->bind_param("i", $donationId);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result == false) {
+			header("HTTP/1.1 523 Status Query failed", true);
+			header("Status: 523 Status Query failed", true);
+			die();
+		}
+		return $result->fetch_all()["0"];
+	}
+
 	public function claimDonation($donationId) {
 		$stmt = $this->mysqli->prepare("UPDATE donations SET claimStatus = 1, recipientUuid = ? WHERE donationId = ?");
 		$stmt->bind_param("si", $this->uuid, $donationId);
@@ -134,6 +148,15 @@ if (in_array($data["type"], $fetchTypes)) {
 		die();
 	}
 	exit($result);
+} else if ($data["type"] == "fetch-status") {
+	if (array_key_exists("donationId", $data)) {
+		$status = $donationsClass->getClaimStatus($data["donationId"]);
+	} else {
+		header("HTTP/1.1 521 Query failed", true);
+		header("Status: 521 Query failed", true);
+		die();
+	}
+	exit(json_encode($status));
 }
 
 ?>
