@@ -15,13 +15,19 @@ class ChatClass {
 
 	public function getMessages() {
 		global $data;
-		$stmt = $this->mysqli->prepare("SELECT chats.chats FROM chats WHERE chats.donationId = ?");
-		$stmt->bind_param("i", $data["donationId"]);
+		$hexUuid = bin2hex($this->uuid);
+		$stmt = $this->mysqli->prepare("SELECT chats.chats FROM chats JOIN donations as d ON chats.donationId = d.donationId WHERE chats.donationId = ? AND d.claimStatus = 1 AND ( d.donorUuid = UNHEX(?) OR d.recipientUuid = UNHEX(?) )");
+		$stmt->bind_param("iss", $data["donationId"], $hexUuid, $hexUuid);
 		$stmt->execute();
 		$result = $stmt->get_result();
 		if ($result == false) {
 			header("HTTP/1.1 523 Image Query failed", true);
 			header("Status: 523 Image Query failed", true);
+			die();
+		}
+		if ($result->num_rows == 0) {
+			header("HTTP/1.1 560 No donation room", true);
+			header("Status: 560 No donation room", true);
 			die();
 		}
 		return $result->fetch_all()["0"]["0"];
@@ -37,8 +43,8 @@ class ChatClass {
 			"message" => $data["message"]
 		];
 		$chats = json_encode($chats);
-		$stmt = $this->mysqli->prepare("UPDATE chats SET chats.chats = ? WHERE donationId = ?");
-		$stmt->bind_param("si", $chats, $data["donationId"]);
+		$stmt = $this->mysqli->prepare("UPDATE chats as c JOIN donations as d ON c.donationId = d.donationId SET c.chats = ? WHERE c.donationId = ? AND d.claimStatus = 1 AND ( d.donorUuid = UNHEX(?) OR d.recipientUuid = UNHEX(?) )");
+		$stmt->bind_param("siss", $chats, $data["donationId"], $sender, $sender);
 		$result = $stmt->execute();
 
 		if ($result == false) {

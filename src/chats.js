@@ -9,7 +9,14 @@ if (donationId) {
 	refreshWorker = new Worker("../worker.js", { type: "module" });
 	refreshWorker.postMessage({ donationId });
 	refreshWorker.onmessage = (e) => {
-		if (e.error) {
+		if (e.data.status != 200) {
+			switch (e.data.status) {
+				case 560:
+					refreshWorker.terminate();
+					alert("Your donation claim period expired.");
+					window.open(window.location.href.replace(/chats\.html.*/g, "donations.html"), "_top");
+					break;
+			}
 			return;
 		}
 		refreshMessages(e.data);
@@ -43,8 +50,9 @@ function updateDisplayedMessages(chats) {
 	}
 }
 
-function refreshMessages(chats) {
+function refreshMessages(chatsObject) {
 	let displayedMessages = getDisplayedMessages();
+	let chats = chatsObject["data"];
 	console.debug(chats);
 	for (let i = 0, j = 0; i < chats.length && j <= displayedMessages.length; i++) {
 		if (displayedMessages.length == 0) {

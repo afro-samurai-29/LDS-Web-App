@@ -4,17 +4,21 @@ let donationId;
 
 async function syncChat() {
 	if (donationId == null) {
-		setTimeout(syncChat, 2000); // repeat every 5s
+		setTimeout(syncChat, 1000); // repeat every 5s
 		return;
 	}
 	try {
 		let response = await fetchChat();
-		let data = await response.json();
-		postMessage(data); // send result back to main thread
+		if (response.status != 200) {
+			postMessage({status: response.status});
+		} else {
+			let data = await response.json();
+			postMessage({status: 200, data}); // send result back to main thread
+		}
 	} catch (e) {
-		postMessage({ error: e.message });
+		postMessage({ status: "500", error: e.message });
 	}
-	setTimeout(syncChat, 2000); // repeat every 5s
+	setTimeout(syncChat, 1000); // repeat every 5s
 }
 
 function fetchChat() {

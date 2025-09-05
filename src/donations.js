@@ -1,14 +1,28 @@
-import { PHPSERVER, DONATIONLOCATIONS, FILTERINGOPTIONS } from "./constants.js"
+import { PHPSERVER, DONATIONLOCATIONS, FILTERINGOPTIONS } from "./constants.js";
 
 let donationList = document.body.querySelector("section#donation-list");
 let categoryFilter = document.body.querySelector("section.white-strip.filtering .filter-controls select#category-filter");
-let activeFilters = document.body.querySelector("section.white-strip.filtering .active-filters");
-let fetchBtns = [
+export const activeFilters = document.body.querySelector("section.white-strip.filtering .active-filters");
+export const fetchBtns = [
 	document.body.querySelector("#fetch-donations"),
 	document.body.querySelector("#fetch-made-donations"),
 	document.body.querySelector("#fetch-claimed-donations")
 ];
 let LOCK = Promise.resolve(true);
+
+let refreshWorker;
+refreshWorker = new Worker("../donationsWorker.js", { type: "module" });
+refreshWorker.onmessage = (e) => {
+	console.debug(e.data);
+	if (e.data.status != 200) {
+		switch (e.data.status) {
+			case 560:
+				refreshWorker.terminate();
+				break;
+		}
+		return;
+	}
+};
 
 function fetchDonations(type) {
 	const filters = [...activeFilters.querySelectorAll("button")].map((e) => {
@@ -116,7 +130,7 @@ async function createDonationDiv(donation, type = "fetch-donations") {
 		});
 	} else {
 		div.innerHTML += `
-			<button id="donation-chat" onclick="window.open(window.location.href.replace(/donations.html/g, 'chat.html?id=${donationId}'), '_top')">Chat</button>
+			<button id="donation-chat" onclick="window.open(window.location.href.replace(/donations.html/g, 'chats.html?id=${donationId}'), '_top')">Chat</button>
 		`;
 	}
 	return div;
